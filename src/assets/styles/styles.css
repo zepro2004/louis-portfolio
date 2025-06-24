@@ -1,0 +1,456 @@
+/* General body styling */
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+  background-size: 100%;
+}
+
+#root {
+  max-width: 2000px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Navbar styling */
+#navbar {
+  padding-top: 0.625em;
+  top: 0;
+  left: 0;
+  bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px dashed #000;
+}
+
+/* Navigation link styling */
+.nav-link {
+  text-decoration: none;
+  padding: 0.625em;
+  display: inline;
+  margin-left: 1em;
+  margin-right: 1em;
+  font-size: 1.4em;
+  color: #000;
+}
+
+/* Navigation link hover effect */
+.nav-link:hover {
+  background-color: rgb(147, 89, 186);
+}
+
+/* Navigation link active effect */
+.nav-link:active {
+  color: #000;
+}
+
+#contact {
+  font-size: 1em;
+}
+
+/* CSS for the index begins here */
+
+/* Welcome section styling */
+#welcome-section {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Intro sentence styling */
+.intro-sentence {
+  font-size: 4rem;
+  color: rgb(115, 91, 13);
+}
+
+/* Welcome section heading styling */
+#welcome-section h1 {
+  font-size: 3rem;
+}
+
+/* Welcome section paragraph styling */
+#welcome-section p {
+  font-size: 1.5rem;
+}
+
+/* Images holder styling */
+.images-holder {
+  display: flex;
+  width: 95%;
+  justify-content: space-around;
+  padding: 1rem;
+  margin-bottom: 0;
+}
+
+/* Individual image styling */
+.images {
+  width: 20%;
+  margin: 0;
+  padding: 1em;
+  height: auto;
+  flex: 1;
+  border-radius: 1rem;
+}
+
+/* Motivation image styling */
+#motivation-image {
+  margin-left: -0.5em;
+}
+
+/* Button container styling */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* Work section styling */
+.project-btns {
+  height: 100%;
+  background-color: rgb(20, 123, 130);
+  color: #000;
+  padding: 0.2em;
+  font-size: 1.5em;
+  border-radius: 0.5rem;
+  border: 1px solid #000;
+}
+
+.project-btns:hover {
+  background-color: rgb(37, 183, 193);
+  cursor: pointer;
+}
+
+/* Footer styling */
+footer {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Closing statement styling */
+.closing-statement {
+  text-align: center;
+  font-size: 1.6em;
+  padding-top: 0.7em;
+}
+
+/* Divider styling */
+.divider {
+  width: 60%;
+  height: 5px;
+  background: linear-gradient(to bottom, #a4766b, #936745);
+  margin-left: 20%;
+}
+
+/* Social links container styling */
+.socials {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Contact links hover effect */
+.contact-links:hover {
+  transform: translateY(5px);
+}
+
+/* FontAwesome icon styling */
+.fa {
+  font-size: 1.25em;
+  padding: 0.625em;
+  text-decoration: none;
+  color: #000;
+}
+
+/* CSS for Contact form begins here */
+
+/* Contact header styling */
+.contact-header {
+  text-align: center;
+  font-size: 2rem;
+  color: #a4766b;
+  text-decoration: underline;
+}
+
+/* Contact form styling */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.contact {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.5em;
+}
+
+textarea {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0.5em;
+  font-size: 1.4em;
+  margin-bottom: 1rem;
+  height: 10rem;
+}
+
+/* Individual input fields styling */
+#name,
+#email,
+#message {
+  font-size: 1.4em;
+  margin-bottom: 1rem;
+  height: 2rem;
+}
+
+/* Message input field styling */
+#message {
+  height: 10rem;
+}
+
+/* Button styling */
+button {
+  font-size: 1.2rem;
+  background-color: rgb(20, 123, 130);
+  width: 25%;
+  height: 2.5rem;
+  margin: 0 auto;
+  margin-top: 1em;
+  border-radius: 0.4em;
+  color: #000;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: rgb(37, 183, 193);
+  cursor: pointer;
+}
+
+/* Social links container styling */
+.socials {
+  display: flex;
+}
+
+/* CSS for resume begins here */
+
+/* Resume header styling */
+.resume-header {
+  text-align: center;
+  font-size: 2rem;
+  color: #a4766b;
+}
+
+/* Contact section styling */
+#contact-info {
+  display: block;
+  margin-left: 5%;
+}
+
+/* Contact section heading styling */
+#contact-info h2 {
+  text-decoration: underline;
+}
+
+/* Contact section paragraph styling */
+#contact-info p {
+  font-size: 1.4rem;
+}
+
+/* Contact links styling */
+.contact-links {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Individual link styling */
+.link {
+  padding-right: 1em;
+  text-decoration: underline;
+  color: #000;
+}
+
+/* Section headings styling */
+#summary h2,
+#skills h2,
+#experience h2,
+#education h2 {
+  text-align: center;
+  text-decoration: underline;
+  font-size: 1.5em;
+  color: #a4766b;
+}
+
+/* Section content styling */
+#summary p,
+#skills,
+#experience,
+#education {
+  margin-left: 3%;
+}
+
+/* Section content paragraph and list styling */
+#summary p,
+#skills ul,
+#experience ul,
+#education div {
+  font-size: 1.2em;
+  margin-left: 3%;
+}
+
+/* Education entry heading styling */
+.education-entry h3 {
+  text-decoration: underline;
+}
+
+/* CSS for projects begins here */
+
+/* Project intro styling */
+.project-intro {
+  text-align: center;
+}
+
+/* Project tile styling */
+.project-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-image: linear-gradient(62deg, #467baf 0%, #a986ca 100%);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0;
+}
+/* Project title styling */
+#project-title {
+  font-style: italic;
+  font-size: 2em;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  color: #961d0d;
+}
+
+/* Project description styling */
+#project-description {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+/* Project date styling */
+#project-date {
+  font-style: italic;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5em;
+}
+
+/* Project tile paragraph styling */
+.project-tile p {
+  font-size: 1.5em;
+}
+
+/* Project navigation styling */
+.project-navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+  margin: 0 auto;
+}
+
+/* Project link styling */
+a {
+  text-decoration: none;
+}
+
+/* Image styling */
+img {
+  width: 60%;
+  height: auto;
+  border-radius: 10px;
+  margin-left: 20%;
+}
+
+/* Image caption styling */
+figcaption {
+  color: #690b0b;
+  font-size: 1em;
+  text-align: right;
+  width: 80%;
+}
+
+/* Profile link styling */
+#profile-link {
+  text-align: center;
+}
+
+/* Button container styling */
+.button2-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+/* More projects button styling */
+.more-projects {
+  text-align: center;
+  height: 100%;
+  width: auto;
+  height: auto;
+  font-size: 2em;
+  border-radius: 1rem;
+}
+
+/* Navigation button styling */
+.nav-button {
+  font-weight: bold;
+}
+
+/* Media query for small screens */
+@media only screen and (max-width: 600px) {
+  .nav-link {
+    padding: 0.2em;
+    display: inline;
+    margin-left: 0.4em;
+    margin-right: 0.4em;
+    font-size: 1.2em;
+  }
+  button {
+    font-size: 1em;
+  }
+  .fa {
+    font-size: 1em;
+    padding: 0.3em;
+  }
+  .closing-statement {
+    font-size: 1.4em;
+    padding-bottom: 0.5em;
+  }
+  .contact-submit-btn {
+    font-size: 1em;
+    width: 50%;
+    height: 2rem;
+  }
+  .project-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 80%;
+    margin: 0 auto;
+  }
+  .nav-button {
+    font-size: 1em;
+    width: 50%;
+    margin-right: 1em;
+  }
+}
