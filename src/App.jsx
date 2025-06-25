@@ -4,7 +4,7 @@ import Layout from "./Layouts/Layout";
 import Home from "./pages/Home";
 import Contact from "./pages/Contact";
 import Projects from "./pages/ProjectsPage";
-import Resume from "./pages/Resume";
+import About from "./pages/About";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/resume" element={<Resume />} />
+          <Route path="/about" element={<About />} />
           {/* Add a fallback route if needed */}
           <Route path="*" element={<Home />} />
         </Routes>
