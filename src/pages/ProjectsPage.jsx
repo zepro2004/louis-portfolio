@@ -421,7 +421,7 @@ export default function ProjectViewer() {
   const githubLinkStyles = {
     display: 'inline-block',
     padding: 'var(--spacing-lg) var(--spacing-xl)',
-    backgroundColor: 'var(--text-primary)',
+    backgroundColor: 'var(--gray-300)',
     color: 'white',
     textDecoration: 'none',
     borderRadius: 'var(--radius-full)',
@@ -469,7 +469,7 @@ export default function ProjectViewer() {
   };
 
   const handleGithubLinkLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--text-primary)';
+    e.currentTarget.style.backgroundColor = 'var(--gray-300)';
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
   };
