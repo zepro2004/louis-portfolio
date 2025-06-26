@@ -1,28 +1,23 @@
 import projects from "../components/Projects";
 import { useState, useEffect } from "react";
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useResponsive } from '../hooks/useResponsive';
+import { useHoverEffects } from '../hooks/useHoverEffects';
+import { PageWrapper } from '../components/layout';
+import { Section, Grid, Button, Card, HeroSection, PageTitle, SectionTitle, BodyText } from '../components/ui';
+import { ProjectCard, StatItem } from '../components/specialized';
 
 export default function ProjectViewer() {
   usePageTitle('My Projects');
+  const isMobile = useResponsive();
+  const { button: buttonHover, card: cardHover } = useHoverEffects();
+  
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(false);
   const [viewMode, setViewMode] = useState('carousel'); // 'carousel' or 'grid'
   const [filter, setFilter] = useState('all'); // 'all', 'web', 'desktop', 'utility'
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Handle responsive design with proper effect
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
 
   // Filter projects based on selected filter
   const getFilteredProjects = () => {
@@ -55,7 +50,7 @@ export default function ProjectViewer() {
         prevIndex === filteredProjects.length - 1 ? 0 : prevIndex + 1
       );
       setFade(false);
-    }, 250);
+    }, 150);
   };
 
   const prevProject = () => {
@@ -65,13 +60,12 @@ export default function ProjectViewer() {
         prevIndex === 0 ? filteredProjects.length - 1 : prevIndex - 1
       );
       setFade(false);
-    }, 250);
+    }, 150);
   };
 
-  // Minimum distance required to trigger swipe
+  // Touch handlers for mobile swiping
   const minSwipeDistance = 50;
 
-  // Touch handlers for mobile swipe navigation
   const onTouchStart = (e) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -85,809 +79,319 @@ export default function ProjectViewer() {
     const isLeftSwipe = distance > minSwipeDistance;
     const isRightSwipe = distance < -minSwipeDistance;
 
-    if (isLeftSwipe && viewMode === 'carousel') {
-      nextProject();
-    }
-    if (isRightSwipe && viewMode === 'carousel') {
-      prevProject();
-    }
+    if (isLeftSwipe) nextProject();
+    if (isRightSwipe) prevProject();
   };
 
-  // Handle URL parameters for filtering
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const filterParam = urlParams.get('filter');
-    if (filterParam && ['web', 'desktop', 'utility'].includes(filterParam)) {
-      setFilter(filterParam);
-    }
-  }, []);
-
-  // Keyboard navigation support
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (viewMode === 'carousel') {
-        if (e.key === 'ArrowLeft') {
-          prevProject();
-        } else if (e.key === 'ArrowRight') {
-          nextProject();
-        }
-      }
+      if (e.key === 'ArrowLeft') prevProject();
+      if (e.key === 'ArrowRight') nextProject();
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [viewMode, prevProject, nextProject]);
+  }, [filteredProjects.length]);
 
-  // Reset currentIndex when filter changes
+  // Reset index when filter changes
   useEffect(() => {
     setCurrentIndex(0);
   }, [filter]);
 
-  const projectPageStyles = {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: 'var(--spacing-2xl) var(--spacing-lg)',
-    boxSizing: 'border-box',
-    minHeight: '100vh'
-  };
-
-  const projectHeaderStyles = {
-    textAlign: 'center',
-    marginBottom: 'var(--spacing-2xl)',
-    maxWidth: 'var(--container-md)'
-  };
-
-  const projectIntroStyles = {
-    fontSize: 'var(--text-3xl)',
-    fontWeight: 'var(--font-semibold)',
-    color: 'var(--primary-color)',
-    marginBottom: 'var(--spacing-lg)'
-  };
-
-  const projectSubtitleStyles = {
-    fontSize: 'var(--text-lg)',
-    color: 'var(--text-secondary)',
-    lineHeight: 'var(--leading-relaxed)',
-    marginBottom: 'var(--spacing-lg)'
-  };
-
-  const projectStatsStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 'var(--spacing-xl)',
-    marginBottom: 'var(--spacing-xl)',
-    flexWrap: 'wrap'
-  };
-
-  const statItemStyles = {
-    textAlign: 'center',
-    padding: 'var(--spacing-lg)',
-    backgroundColor: 'var(--bg-card)',
-    borderRadius: 'var(--radius-lg)',
-    boxShadow: 'var(--shadow-sm)',
-    minWidth: '100px',
-    border: '1px solid var(--border-light)',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer'
-  };
-
-  const statNumberStyles = {
-    fontSize: 'var(--text-2xl)',
-    fontWeight: 'var(--font-bold)',
-    color: 'var(--primary-color)',
-    display: 'block'
-  };
-
-  const statLabelStyles = {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--text-secondary)',
-    marginTop: 'var(--spacing-xs)'
-  };
-
-  const viewToggleStyles = {
-    display: 'flex',
-    gap: 'var(--spacing-lg)',
-    marginBottom: 'var(--spacing-2xl)',
-    padding: 'var(--spacing-md)',
-    backgroundColor: 'var(--bg-section)',
-    borderRadius: 'var(--radius-full)',
-    boxShadow: 'var(--shadow-sm)',
-    justifyContent: 'center',
-    border: '1px solid var(--border-light)',
-    transition: 'all 0.3s ease'
-  };
-
-  const filterSectionStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 'var(--spacing-lg)',
-    marginBottom: 'var(--spacing-xl)',
-    flexWrap: 'wrap'
-  };
-
-  const filterButtonStyles = {
-    padding: 'var(--spacing-md) var(--spacing-lg)',
-    border: '1px solid var(--primary-color)',
-    borderRadius: 'var(--radius-full)',
-    backgroundColor: 'transparent',
-    color: 'var(--primary-color)',
-    fontSize: 'var(--text-sm)',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease',
-    fontWeight: 'var(--font-medium)'
-  };
-
-  const activeFilterStyles = {
-    backgroundColor: 'var(--primary-color)',
-    color: 'white'
-  };
-
-  const toggleButtonStyles = {
-    padding: 'var(--spacing-md) var(--spacing-xl)',
-    border: 'none',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-base)',
-    fontWeight: 'var(--font-medium)',
-    cursor: 'pointer',
-    transition: 'all 0.3s ease'
-  };
-
-  const activeToggleStyles = {
-    backgroundColor: 'var(--primary-color)',
-    color: 'white',
-    boxShadow: 'var(--shadow-brand)'
-  };
-
-  const inactiveToggleStyles = {
-    backgroundColor: 'transparent',
-    color: 'var(--text-secondary)'
-  };
-
-  // Grid View Styles
-  const gridContainerStyles = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-    gap: 'var(--spacing-lg)',
-    width: '100%',
-    maxWidth: 'var(--container-xl)',
-    marginBottom: 'var(--spacing-xl)',
-    justifyItems: 'center'
-  };
-
-  const gridProjectCardStyles = {
-    backgroundColor: 'var(--bg-card)',
-    borderRadius: 'var(--radius-xl)',
-    boxShadow: 'var(--shadow-lg)',
-    overflow: 'hidden',
-    transition: 'var(--transition-base)',
-    border: '1px solid var(--border-light)',
-    width: '100%',
-    maxWidth: '400px'
-  };
-
-  const gridProjectImageStyles = {
-    width: '100%',
-    height: '200px',
-    objectFit: 'cover'
-  };
-
-  const gridProjectContentStyles = {
-    padding: 'var(--spacing-lg)'
-  };
-
-  const gridProjectTitleStyles = {
-    fontSize: 'var(--text-xl)',
-    fontWeight: 'var(--font-semibold)',
-    color: 'var(--text-primary)',
-    marginBottom: 'var(--spacing-md)'
-  };
-
-  const gridProjectDateStyles = {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--primary-color)',
-    marginBottom: 'var(--spacing-lg)',
-    fontWeight: 'var(--font-medium)'
-  };
-
-  const gridProjectDescriptionStyles = {
-    fontSize: 'var(--text-base)',
-    color: 'var(--text-secondary)',
-    lineHeight: 'var(--leading-relaxed)',
-    marginBottom: 'var(--spacing-lg)'
-  };
-
-  const gridProjectTechStyles = {
-    fontSize: 'var(--text-sm)',
-    color: 'var(--primary-color)',
-    fontWeight: 'var(--font-medium)',
-    marginBottom: 'var(--spacing-lg)'
-  };
-
-  const gridProjectLinkStyles = {
-    display: 'inline-block',
-    padding: 'var(--spacing-md) var(--spacing-lg)',
-    backgroundColor: 'var(--primary-color)',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-sm)',
-    fontWeight: 'var(--font-medium)',
-    transition: 'var(--transition-base)'
-  };
-
-  // Carousel View Styles (Enhanced)
-  const carouselContainerStyles = {
-    width: '100%',
-    maxWidth: 'var(--container-md)',
-    marginBottom: 'var(--spacing-2xl)'
-  };
-
-  const projectTileStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    padding: 'var(--spacing-2xl)',
-    backgroundColor: 'var(--bg-card)',
-    borderRadius: 'var(--radius-2xl)',
-    boxShadow: 'var(--shadow-xl)',
-    transition: 'all 0.5s ease',
-    marginBottom: 'var(--spacing-xl)',
-    border: '1px solid var(--border-light)',
-    cursor: 'pointer'
-  };
-
-  const fadeOutStyles = {
-    opacity: 0
-  };
-
-  const projectTitleStyles = {
-    fontSize: 'var(--text-2xl)',
-    fontWeight: 'var(--font-bold)',
-    color: 'var(--primary-color)',
-    marginBottom: 'var(--spacing-lg)',
-    textAlign: 'center'
-  };
-
-  const projectDescriptionStyles = {
-    fontSize: 'var(--text-lg)',
-    textAlign: 'center',
-    color: 'var(--text-secondary)',
-    lineHeight: 'var(--leading-relaxed)',
-    marginBottom: 'var(--spacing-lg)',
-    maxWidth: '600px'
-  };
-
-  const projectDateStyles = {
-    fontSize: 'var(--text-base)',
-    color: 'var(--primary-color)',
-    fontWeight: 'var(--font-medium)',
-    marginBottom: 'var(--spacing-lg)'
-  };
-
-  const projectTilePStyles = {
-    fontSize: 'var(--text-lg)',
-    color: 'var(--text-secondary)',
-    marginBottom: 'var(--spacing-xl)'
-  };
-
-  const imgStyles = {
-    width: '100%',
-    maxWidth: '500px',
-    height: 'auto',
-    borderRadius: 'var(--radius-xl)',
-    margin: 'var(--spacing-xl) 0',
-    boxShadow: 'var(--shadow-lg)',
-    transition: 'var(--transition-base)'
-  };
-
-  const projectNavigationStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 'var(--spacing-xl)',
-    marginBottom: 'var(--spacing-xl)',
-    width: '100%',
-    maxWidth: 'var(--container-md)',
-    margin: '0 auto var(--spacing-xl) auto'
-  };
-
-  const navButtonStyles = {
-    padding: 'var(--spacing-lg) var(--spacing-xl)',
-    backgroundColor: 'var(--primary-color)',
-    color: 'white',
-    border: 'none',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-lg)',
-    fontWeight: 'var(--font-semibold)',
-    cursor: 'pointer',
-    transition: 'var(--transition-base)',
-    boxShadow: 'var(--shadow-brand)',
-    minWidth: '120px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 'var(--spacing-md)'
-  };
-
-  const navButtonHoverStyles = {
-    backgroundColor: 'var(--primary-dark)',
-    transform: 'translateY(-2px)',
-    boxShadow: 'var(--shadow-brand-hover)'
-  };
-
-  const projectCounterStyles = {
-    fontSize: 'var(--text-base)',
-    color: 'var(--text-secondary)',
-    fontWeight: 'var(--font-medium)',
-    padding: 'var(--spacing-md) var(--spacing-lg)',
-    backgroundColor: 'var(--bg-section)',
-    borderRadius: 'var(--radius-full)',
-    border: '1px solid var(--border-light)',
-    minWidth: '100px',
-    textAlign: 'center',
-    transition: 'all 0.3s ease',
-    cursor: 'default'
-  };
-
-  const githubLinkStyles = {
-    display: 'inline-block',
-    padding: 'var(--spacing-lg) var(--spacing-xl)',
-    backgroundColor: 'var(--gray-300)',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: 'var(--radius-full)',
-    fontSize: 'var(--text-lg)',
-    fontWeight: 'var(--font-semibold)',
-    transition: 'var(--transition-base)',
-    boxShadow: 'var(--shadow-lg)',
-    marginTop: 'var(--spacing-xl)'
-  };
-
-  const handleButtonHover = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-dark)';
-    e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-brand-hover)';
-  };
-
-  const handleButtonLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
-  };
-
-  const handleImageHover = (e) => {
-    e.currentTarget.style.transform = 'scale(1.02)';
-  };
-
-  const handleImageLeave = (e) => {
-    e.currentTarget.style.transform = 'scale(1)';
-  };
-
-  const handleGridCardHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-8px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
-  };
-
-  const handleGridCardLeave = (e) => {
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-  };
-
-  const handleGithubLinkHover = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--gray-900)';
-    e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
-  };
-
-  const handleGithubLinkLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--gray-300)';
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-  };
-
-  // New hover handlers for interactive elements
-  const handleStatItemHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
-    e.currentTarget.style.borderColor = 'var(--primary-color)';
-  };
-
-  const handleStatItemLeave = (e) => {
-    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
-    e.currentTarget.style.borderColor = 'var(--border-light)';
-  };
-
-  const handleFilterButtonHover = (e) => {
-    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
-      e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
-      e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
-      e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
+  // View mode renderers
+  const renderCarouselView = () => {
+    if (filteredProjects.length === 0) {
+      return (
+        <Card style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+          <SectionTitle style={{ marginBottom: '1rem' }}>
+            No projects found
+          </SectionTitle>
+          <BodyText>
+            No projects match the selected filter. Try selecting a different category.
+          </BodyText>
+        </Card>
+      );
     }
+
+    return (
+      <Section maxWidth="md">
+        {/* Navigation hint */}
+        <BodyText 
+          style={{ 
+            textAlign: 'center', 
+            display: 'block',
+            marginBottom: '2rem', 
+            fontStyle: 'italic',
+            opacity: 0.7
+          }}
+        >
+          💡 Use arrow keys or swipe to navigate between projects
+        </BodyText>
+
+        {/* Main project card */}
+        <Card
+          style={{
+            opacity: fade ? 0.5 : 1,
+            transition: 'opacity 0.15s ease-in-out',
+            padding: '2rem',
+            ...cardHover
+          }}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: '2rem' }}>
+            {/* Project Image */}
+            <div style={{ 
+              flex: isMobile ? 'none' : '0 0 300px',
+              width: isMobile ? '100%' : '300px'
+            }}>
+              <img
+                src={project.image}
+                alt={project.title}
+                style={{
+                  width: '100%',
+                  height: '200px',
+                  objectFit: 'cover',
+                  borderRadius: '8px',
+                  border: '1px solid #e1e1e1'
+                }}
+              />
+            </div>
+
+            {/* Project Details */}
+            <div style={{ flex: 1 }}>
+              <SectionTitle 
+                style={{ 
+                  marginBottom: '1rem',
+                  color: '#2c3e50'
+                }}
+              >
+                {project.title}
+              </SectionTitle>
+
+              <BodyText style={{ marginBottom: '1.5rem' }}>
+                {project.description}
+              </BodyText>
+
+              <BodyText 
+                style={{ 
+                  marginBottom: '2rem',
+                  fontWeight: 'bold',
+                  color: '#7f8c8d'
+                }}
+              >
+                <strong>Technologies:</strong> {project.technologies}
+              </BodyText>
+
+              <BodyText style={{ marginBottom: '2rem' }}>
+                <strong>Key Features:</strong>
+                <br />
+                {project.features}
+              </BodyText>
+
+              {/* Links */}
+              <div style={{ 
+                display: 'flex', 
+                gap: '1rem',
+                flexWrap: 'wrap',
+                marginBottom: '2rem'
+              }}>
+                {project.github && (
+                  <Button
+                    variant="primary"
+                    onClick={() => window.open(project.github, '_blank')}
+                    style={buttonHover}
+                  >
+                    View Code
+                  </Button>
+                )}
+                {project.demo && (
+                  <Button
+                    variant="secondary"
+                    onClick={() => window.open(project.demo, '_blank')}
+                    style={buttonHover}
+                  >
+                    Live Demo
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: '2rem',
+            paddingTop: '2rem',
+            borderTop: '1px solid #e1e1e1'
+          }}>
+            <Button
+              variant="outline"
+              onClick={prevProject}
+              disabled={filteredProjects.length <= 1}
+              style={buttonHover}
+            >
+              ← Previous
+            </Button>
+
+            <span style={{ 
+              color: '#7f8c8d',
+              fontSize: '0.9rem'
+            }}>
+              {currentIndex + 1} of {filteredProjects.length}
+            </span>
+
+            <Button
+              variant="outline"
+              onClick={nextProject}
+              disabled={filteredProjects.length <= 1}
+              style={buttonHover}
+            >
+              Next →
+            </Button>
+          </div>
+        </Card>
+      </Section>
+    );
   };
 
-  const handleFilterButtonLeave = (e) => {
-    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
-      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-      e.currentTarget.style.boxShadow = 'none';
-      e.currentTarget.style.backgroundColor = 'transparent';
+  const renderGridView = () => {
+    if (filteredProjects.length === 0) {
+      return (
+        <Card style={{ textAlign: 'center', padding: '3rem 2rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+          <SectionTitle style={{ marginBottom: '1rem' }}>
+            No projects found
+          </SectionTitle>
+          <BodyText>
+            No projects match the selected filter. Try selecting a different category.
+          </BodyText>
+        </Card>
+      );
     }
+
+    return (
+      <Grid columns={isMobile ? 1 : 2} gap="2rem">
+        {filteredProjects.map((proj, index) => (
+          <ProjectCard 
+            key={index} 
+            project={proj} 
+            isActive={index === currentIndex}
+            onClick={() => setCurrentIndex(index)}
+          />
+        ))}
+      </Grid>
+    );
   };
-
-  const handleToggleButtonHover = (e) => {
-    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
-      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-      e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
-    }
-  };
-
-  const handleToggleButtonLeave = (e) => {
-    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
-      e.currentTarget.style.transform = 'translateY(0) scale(1)';
-      e.currentTarget.style.backgroundColor = 'transparent';
-    }
-  };
-
-  const handleProjectTileHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
-    e.currentTarget.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.3)';
-  };
-
-  const handleProjectTileLeave = (e) => {
-    e.currentTarget.style.transform = 'translateY(0) scale(1)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
-  };
-
-  const handleCounterHover = (e) => {
-    e.currentTarget.style.transform = 'scale(1.05)';
-    e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
-  };
-
-  const handleCounterLeave = (e) => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.style.backgroundColor = 'var(--bg-section)';
-  };
-
-  // Responsive styles
-  const responsivePageStyles = isMobile ? {
-    padding: '1rem'
-  } : {};
-
-  const responsiveProjectTileStyles = isMobile ? {
-    padding: '2rem 1rem'
-  } : {};
-
-  const responsiveNavButtonStyles = isMobile ? {
-    padding: '0.8rem 1.5rem',
-    fontSize: '1rem',
-    minWidth: '100px'
-  } : {};
-
-  const responsiveGridStyles = isMobile ? {
-    gridTemplateColumns: '1fr',
-    gap: 'var(--spacing-lg)'
-  } : {};
-
-  const responsiveProjectTitleStyles = isMobile ? {
-    fontSize: '2rem'
-  } : {};
-
-  const responsiveProjectIntroStyles = isMobile ? {
-    fontSize: '2.2rem'
-  } : {};
 
   return (
-    <div style={{...projectPageStyles, ...responsivePageStyles}}>
-      <div style={projectHeaderStyles}>
-        <h1 style={{...projectIntroStyles, ...responsiveProjectIntroStyles}}>My Projects</h1>
-        <p style={projectSubtitleStyles}>
-          A showcase of my development journey, featuring full-stack applications,
-          web utilities, and database-driven solutions.
-        </p>
+    <PageWrapper>
+      <HeroSection
+        title="My Projects"
+        subtitle="Explore my coding journey through various projects and applications"
+        backgroundGradient="linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      />
 
-        {/* Project Statistics */}
-        <div style={projectStatsStyles}>
-          <div 
-            style={statItemStyles}
-            onMouseEnter={handleStatItemHover}
-            onMouseLeave={handleStatItemLeave}
-          >
-            <span style={statNumberStyles}>{projects.length}</span>
-            <div style={statLabelStyles}>Total Projects</div>
-          </div>
-          <div 
-            style={statItemStyles}
-            onMouseEnter={handleStatItemHover}
-            onMouseLeave={handleStatItemLeave}
-          >
-            <span style={statNumberStyles}>6+</span>
-            <div style={statLabelStyles}>Technologies</div>
-          </div>
-          <div 
-            style={statItemStyles}
-            onMouseEnter={handleStatItemHover}
-            onMouseLeave={handleStatItemLeave}
-          >
-            <span style={statNumberStyles}>2+</span>
-            <div style={statLabelStyles}>Years Building</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Project Filter */}
-      <div style={filterSectionStyles}>
-        <button
-          style={{
-            ...filterButtonStyles,
-            ...(filter === 'all' ? activeFilterStyles : {})
-          }}
-          onClick={() => setFilter('all')}
-          onMouseEnter={handleFilterButtonHover}
-          onMouseLeave={handleFilterButtonLeave}
-        >
-          All Projects
-        </button>
-        <button
-          style={{
-            ...filterButtonStyles,
-            ...(filter === 'web' ? activeFilterStyles : {})
-          }}
-          onClick={() => setFilter('web')}
-          onMouseEnter={handleFilterButtonHover}
-          onMouseLeave={handleFilterButtonLeave}
-        >
-          Web Apps
-        </button>
-        <button
-          style={{
-            ...filterButtonStyles,
-            ...(filter === 'desktop' ? activeFilterStyles : {})
-          }}
-          onClick={() => setFilter('desktop')}
-          onMouseEnter={handleFilterButtonHover}
-          onMouseLeave={handleFilterButtonLeave}
-        >
-          Desktop Apps
-        </button>
-        <button
-          style={{
-            ...filterButtonStyles,
-            ...(filter === 'utility' ? activeFilterStyles : {})
-          }}
-          onClick={() => setFilter('utility')}
-          onMouseEnter={handleFilterButtonHover}
-          onMouseLeave={handleFilterButtonLeave}
-        >
-          Utilities
-        </button>
-      </div>
-
-      {/* View Toggle */}
-      <div style={viewToggleStyles}>
-        <button
-          style={{
-            ...toggleButtonStyles,
-            ...(viewMode === 'carousel' ? activeToggleStyles : inactiveToggleStyles)
-          }}
-          onClick={() => setViewMode('carousel')}
-          onMouseEnter={handleToggleButtonHover}
-          onMouseLeave={handleToggleButtonLeave}
-        >
-          📖 Carousel View
-        </button>
-        <button
-          style={{
-            ...toggleButtonStyles,
-            ...(viewMode === 'grid' ? activeToggleStyles : inactiveToggleStyles)
-          }}
-          onClick={() => setViewMode('grid')}
-          onMouseEnter={handleToggleButtonHover}
-          onMouseLeave={handleToggleButtonLeave}
-        >
-          📋 Grid View
-        </button>
-      </div>
-
-      {viewMode === 'carousel' ? (
-        /* Carousel View */
-        <div style={carouselContainerStyles}>
-          {filteredProjects.length > 0 ? (
-            <>
-              {/* Navigation hints */}
-              <div style={{
-                textAlign: 'center',
-                color: 'var(--text-muted)',
-                fontSize: 'var(--text-sm)',
-                marginBottom: 'var(--spacing-lg)',
-                fontStyle: 'italic'
-              }}>
-                💡 Use arrow keys or swipe to navigate between projects
-              </div>
-
-              <div
-                style={{
-                  ...projectTileStyles,
-                  ...responsiveProjectTileStyles,
-                  ...(fade ? fadeOutStyles : {})
-                }}
-                onTouchStart={onTouchStart}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchEnd}
-                onMouseEnter={handleProjectTileHover}
-                onMouseLeave={handleProjectTileLeave}
-              >
-                <h2 style={{...projectTitleStyles, ...responsiveProjectTitleStyles}}>{project.title}</h2>
-                <p style={{...projectDateStyles, ...projectTilePStyles}}>📅 {project.date}</p>
-                <p style={{...projectDescriptionStyles, ...projectTilePStyles}}>{project.description}</p>
-                <p style={projectTilePStyles}>
-                  <strong>🛠️ Technologies: </strong>
-                  {project.technologies}
-                </p>
-                <a
-                  href={project.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    style={imgStyles}
-                    loading="lazy"
-                    onMouseEnter={handleImageHover}
-                    onMouseLeave={handleImageLeave}
-                  />
-                </a>
-              </div>
-
-              <div style={projectNavigationStyles}>
-                <button
-                  style={{...navButtonStyles, ...responsiveNavButtonStyles}}
-                  onClick={prevProject}
-                  onMouseEnter={handleButtonHover}
-                  onMouseLeave={handleButtonLeave}
-                  disabled={filteredProjects.length === 0}
-                  title="View previous project"
-                >
-                  <span>←</span> Previous
-                </button>
-                <div 
-                  style={projectCounterStyles}
-                  onMouseEnter={handleCounterHover}
-                  onMouseLeave={handleCounterLeave}
-                >
-                  {currentIndex + 1} of {filteredProjects.length}
-                </div>
-                <button
-                  style={{...navButtonStyles, ...responsiveNavButtonStyles}}
-                  onClick={nextProject}
-                  onMouseEnter={handleButtonHover}
-                  onMouseLeave={handleButtonLeave}
-                  disabled={filteredProjects.length === 0}
-                  title="View next project"
-                >
-                  Next <span>→</span>
-                </button>
-              </div>
-
-              {/* Progress indicator */}
-              <div style={{
+      <Section maxWidth="lg">
+        {/* Filter Controls */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+          marginBottom: '2rem',
+          flexWrap: 'wrap'
+        }}>
+          {[
+            { key: 'all', label: 'All Projects', icon: '🚀' },
+            { key: 'web', label: 'Web Apps', icon: '🌐' },
+            { key: 'desktop', label: 'Desktop Apps', icon: '💻' },
+            { key: 'utility', label: 'Utilities', icon: '🛠️' }
+          ].map(({ key, label, icon }) => (
+            <Button
+              key={key}
+              variant={filter === key ? 'primary' : 'outline'}
+              onClick={() => setFilter(key)}
+              style={{
                 display: 'flex',
-                justifyContent: 'center',
+                alignItems: 'center',
                 gap: '0.5rem',
-                marginBottom: '1rem'
-              }}>
-                {filteredProjects.map((_, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      backgroundColor: index === currentIndex ? 'var(--primary-color)' : 'var(--border-color)',
-                      transition: 'var(--transition-base)',
-                      cursor: 'pointer'
-                    }}
-                    onClick={() => {
-                      setFade(true);
-                      setTimeout(() => {
-                        setCurrentIndex(index);
-                        setFade(false);
-                      }, 250);
-                    }}
-                    title={`Go to project ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </>
-          ) : (
-            /* Empty state for carousel */
-            <div style={{
-              textAlign: 'center',
-              padding: 'var(--spacing-3xl) var(--spacing-xl)',
-              color: 'var(--text-secondary)',
-              fontSize: 'var(--text-lg)',
-              backgroundColor: 'var(--bg-section)',
-              borderRadius: 'var(--radius-xl)',
-              border: '2px dashed var(--border-color)'
-            }}>
-              <div style={{ fontSize: 'var(--text-4xl)', marginBottom: 'var(--spacing-lg)' }}>🔍</div>
-              <h3 style={{ color: 'var(--primary-color)', marginBottom: 'var(--spacing-md)' }}>No projects found</h3>
-              <p>No projects match the selected filter. Try selecting a different category.</p>
-            </div>
-          )}
-        </div>
-      ) : (
-        /* Grid View */
-        <div style={{...gridContainerStyles, ...responsiveGridStyles}}>
-          {filteredProjects.map((project, index) => (
-            <div
-              key={index}
-              style={gridProjectCardStyles}
-              onMouseEnter={handleGridCardHover}
-              onMouseLeave={handleGridCardLeave}
+                ...buttonHover
+              }}
             >
-              <a
-                href={project.source}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  style={gridProjectImageStyles}
-                  loading="lazy"
-                />
-              </a>
-              <div style={gridProjectContentStyles}>
-                <h3 style={gridProjectTitleStyles}>{project.title}</h3>
-                <p style={gridProjectDateStyles}>📅 {project.date}</p>
-                <p style={gridProjectDescriptionStyles}>{project.description}</p>
-                <p style={gridProjectTechStyles}>🛠️ {project.technologies}</p>
-                <a
-                  href={project.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={gridProjectLinkStyles}
-                >
-                  View Project →
-                </a>
-              </div>
-            </div>
+              <span>{icon}</span>
+              {label}
+            </Button>
           ))}
-          {filteredProjects.length === 0 && (
-            <div style={{
-              gridColumn: '1 / -1',
-              textAlign: 'center',
-              padding: 'var(--spacing-3xl) var(--spacing-xl)',
-              color: 'var(--text-secondary)',
-              fontSize: 'var(--text-lg)',
-              backgroundColor: 'var(--bg-section)',
-              borderRadius: 'var(--radius-xl)',
-              border: '2px dashed var(--border-color)'
-            }}>
-              <div style={{ fontSize: 'var(--text-4xl)', marginBottom: 'var(--spacing-lg)' }}>🔍</div>
-              <h3 style={{ color: 'var(--primary-color)', marginBottom: 'var(--spacing-md)' }}>No projects found</h3>
-              <p>No projects match the selected filter. Try selecting a different category.</p>
-            </div>
-          )}
         </div>
-      )}
 
-      {/* GitHub Link */}
-      <a
-        style={githubLinkStyles}
-        href="https://github.com/zepro2004"
-        target="_blank"
-        rel="noopener noreferrer"
-        onMouseEnter={handleGithubLinkHover}
-        onMouseLeave={handleGithubLinkLeave}
-      >
-        🔗 View More on GitHub
-      </a>
-    </div>
+        {/* View Mode Toggle */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '1rem',
+          marginBottom: '3rem'
+        }}>
+          <Button
+            variant={viewMode === 'carousel' ? 'primary' : 'outline'}
+            onClick={() => setViewMode('carousel')}
+            style={buttonHover}
+          >
+            📖 Carousel View
+          </Button>
+          <Button
+            variant={viewMode === 'grid' ? 'primary' : 'outline'}
+            onClick={() => setViewMode('grid')}
+            style={buttonHover}
+          >
+            📱 Grid View
+          </Button>
+        </div>
+
+        {/* Project Stats */}
+        <Section maxWidth="md" style={{ marginBottom: '3rem' }}>
+          <Grid columns={isMobile ? 2 : 4} gap="1rem">
+            <StatItem 
+              label="Total Projects" 
+              value={projects.length}
+              icon="🚀"
+            />
+            <StatItem 
+              label="Web Apps" 
+              value={projects.filter(p => 
+                p.technologies.toLowerCase().includes('javascript') ||
+                p.technologies.toLowerCase().includes('php') ||
+                p.technologies.toLowerCase().includes('html')
+              ).length}
+              icon="🌐"
+            />
+            <StatItem 
+              label="Desktop Apps" 
+              value={projects.filter(p => 
+                p.technologies.toLowerCase().includes('java') &&
+                !p.technologies.toLowerCase().includes('javascript')
+              ).length}
+              icon="💻"
+            />
+            <StatItem 
+              label="Utilities" 
+              value={projects.filter(p => 
+                p.title.toLowerCase().includes('converter') ||
+                p.title.toLowerCase().includes('checker') ||
+                p.title.toLowerCase().includes('validator')
+              ).length}
+              icon="🛠️"
+            />
+          </Grid>
+        </Section>
+
+        {/* Render selected view */}
+        {viewMode === 'carousel' ? renderCarouselView() : renderGridView()}
+      </Section>
+    </PageWrapper>
   );
 }

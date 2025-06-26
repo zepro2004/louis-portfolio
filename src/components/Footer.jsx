@@ -1,20 +1,11 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useResponsive } from '../hooks/useResponsive';
+import { useHoverEffects } from '../hooks/useHoverEffects';
 
 export default function Footer() {
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useResponsive();
+  const { link: linkHover } = useHoverEffects();
 
-  // Handle responsive design with proper effect
-  useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
   const footerStyles = {
     width: '100%',
     background: 'var(--footer-gradient)',
@@ -52,15 +43,10 @@ export default function Footer() {
 
   const footerContentStyles = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '3rem',
-    alignItems: 'start'
-  };
-
-  const brandSectionStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem'
+    gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: isMobile ? '2rem' : '3rem',
+    alignItems: 'start',
+    textAlign: isMobile ? 'center' : 'left'
   };
 
   const brandNameStyles = {
@@ -84,7 +70,8 @@ export default function Footer() {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '0.5rem',
-    marginTop: '1rem'
+    marginTop: '1rem',
+    justifyContent: isMobile ? 'center' : 'flex-start'
   };
 
   const skillTagStyles = {
@@ -97,24 +84,21 @@ export default function Footer() {
     border: '1px solid var(--border-brand-hover)'
   };
 
-  const socialSectionStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem'
-  };
-
   const sectionHeaderStyles = {
     fontSize: '1.3rem',
     fontWeight: '600',
     color: 'white',
     margin: 0,
-    marginBottom: '0.5rem'
+    marginBottom: '1rem'
   };
 
-  const socialLinksStyles = {
-    display: 'flex',
-    gap: '1rem',
-    flexWrap: 'wrap'
+  const quickLinkStyles = {
+    color: 'var(--text-secondary)',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    transition: 'all 0.3s ease',
+    position: 'relative',
+    display: 'inline-block'
   };
 
   const socialLinkStyles = {
@@ -133,34 +117,11 @@ export default function Footer() {
     backdropFilter: 'blur(10px)'
   };
 
-  const quickLinksStyles = {
+  const socialLinksStyles = {
     display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem'
-  };
-
-  const quickLinkListStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.8rem',
-    listStyle: 'none',
-    padding: 0,
-    margin: 0
-  };
-
-  const quickLinkStyles = {
-    color: 'var(--text-secondary)',
-    textDecoration: 'none',
-    fontSize: '1rem',
-    transition: 'all 0.3s ease',
-    position: 'relative',
-    display: 'inline-block'
-  };
-
-  const contactInfoStyles = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem'
+    gap: '1rem',
+    flexWrap: 'wrap',
+    justifyContent: isMobile ? 'center' : 'flex-start'
   };
 
   const contactItemStyles = {
@@ -168,7 +129,8 @@ export default function Footer() {
     alignItems: 'center',
     gap: '0.8rem',
     color: 'var(--text-secondary)',
-    fontSize: '0.95rem'
+    fontSize: '0.95rem',
+    justifyContent: isMobile ? 'center' : 'flex-start'
   };
 
   const dividerStyles = {
@@ -185,7 +147,11 @@ export default function Footer() {
     flexWrap: 'wrap',
     gap: '1rem',
     paddingTop: '2rem',
-    borderTop: '1px solid var(--border-light)'
+    borderTop: '1px solid var(--border-light)',
+    ...(isMobile && {
+      flexDirection: 'column',
+      textAlign: 'center'
+    })
   };
 
   const copyrightStyles = {
@@ -202,16 +168,6 @@ export default function Footer() {
     color: 'var(--text-muted)'
   };
 
-  const techStackStyles = {
-    display: 'flex',
-    gap: '0.3rem'
-  };
-
-  const techIconStyles = {
-    fontSize: '1rem'
-  };
-
-  // Event handlers
   const handleSocialHover = (e) => {
     e.currentTarget.style.backgroundColor = 'var(--accent-brand-80)';
     e.currentTarget.style.borderColor = 'var(--primary-color)';
@@ -226,149 +182,113 @@ export default function Footer() {
     e.currentTarget.style.boxShadow = 'none';
   };
 
-  const handleQuickLinkHover = (e) => {
-    e.currentTarget.style.color = 'var(--primary-color)';
-    e.currentTarget.style.transform = 'translateX(5px)';
-  };
+  const navLinks = [
+    { to: '/', label: 'Home', icon: '🏠' },
+    { to: '/about', label: 'About', icon: '👨‍💻' },
+    { to: '/projects', label: 'Projects', icon: '💼' },
+    { to: '/contact', label: 'Contact', icon: '📧' }
+  ];
 
-  const handleQuickLinkLeave = (e) => {
-    e.currentTarget.style.color = 'var(--text-secondary)';
-    e.currentTarget.style.transform = 'translateX(0)';
-  };
+  const socialLinks = [
+    {
+      href: "https://github.com/zepro2004",
+      label: "GitHub",
+      icon: "🔗"
+    },
+    {
+      href: "https://www.linkedin.com/in/louis-bertrand-ntwali-118389312/",
+      label: "LinkedIn", 
+      icon: "💼"
+    }
+  ];
 
-  // Media query styles for responsive design  
-  const responsiveFooterContentStyles = isMobile ? {
-    gridTemplateColumns: '1fr',
-    textAlign: 'center',
-    gap: '2rem'
-  } : {};
-
-  const responsiveCopyrightStyles = isMobile ? {
-    flexDirection: 'column',
-    textAlign: 'center',
-    gap: '1rem'
-  } : {};
-
-  const responsiveSocialLinksStyles = isMobile ? {
-    justifyContent: 'center'
-  } : {};
+  const skills = ["React", "Java", "JavaScript", "SQL"];
 
   return (
     <footer style={footerStyles}>
       <div style={backgroundPatternStyles}></div>
       <div style={footerContainerStyles}>
-        <div style={{...footerContentStyles, ...responsiveFooterContentStyles}}>
+        <div style={footerContentStyles}>
           {/* Brand Section */}
-          <div style={brandSectionStyles}>
+          <div>
             <h3 style={brandNameStyles}>Louis Bertrand</h3>
             <p style={brandTaglineStyles}>
               Computer Programming Student passionate about creating efficient software solutions 
               and building meaningful digital experiences.
             </p>
             <div style={skillsTagsStyles}>
-              <span style={skillTagStyles}>React</span>
-              <span style={skillTagStyles}>Java</span>
-              <span style={skillTagStyles}>JavaScript</span>
-              <span style={skillTagStyles}>SQL</span>
+              {skills.map((skill, index) => (
+                <span key={index} style={skillTagStyles}>{skill}</span>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
-          <div style={quickLinksStyles}>
+          <div>
             <h4 style={sectionHeaderStyles}>Navigation</h4>
-            <div style={quickLinkListStyles}>
-              <Link 
-                to="/" 
-                style={quickLinkStyles}
-                onMouseEnter={handleQuickLinkHover}
-                onMouseLeave={handleQuickLinkLeave}
-              >
-                🏠 Home
-              </Link>
-              <Link 
-                to="/about" 
-                style={quickLinkStyles}
-                onMouseEnter={handleQuickLinkHover}
-                onMouseLeave={handleQuickLinkLeave}
-              >
-                👨‍💻 About
-              </Link>
-              <Link 
-                to="/projects" 
-                style={quickLinkStyles}
-                onMouseEnter={handleQuickLinkHover}
-                onMouseLeave={handleQuickLinkLeave}
-              >
-                � Projects
-              </Link>
-              <Link 
-                to="/contact" 
-                style={quickLinkStyles}
-                onMouseEnter={handleQuickLinkHover}
-                onMouseLeave={handleQuickLinkLeave}
-              >
-                � Contact
-              </Link>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+              {navLinks.map((link, index) => (
+                <Link 
+                  key={index}
+                  to={link.to} 
+                  style={quickLinkStyles}
+                  {...linkHover}
+                >
+                  {link.icon} {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
           {/* Social Links */}
-          <div style={socialSectionStyles}>
+          <div>
             <h4 style={sectionHeaderStyles}>Connect With Me</h4>
-            <div style={{...socialLinksStyles, ...responsiveSocialLinksStyles}}>
-              <a
-                href="https://github.com/zepro2004"
-                style={socialLinkStyles}
-                onMouseEnter={handleSocialHover}
-                onMouseLeave={handleSocialLeave}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="GitHub"
-              >
-                🔗 GitHub
-              </a>
-              <a
-                href="https://www.linkedin.com/in/louis-bertrand-ntwali-118389312/"
-                style={socialLinkStyles}
-                onMouseEnter={handleSocialHover}
-                onMouseLeave={handleSocialLeave}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="LinkedIn"
-              >
-                💼 LinkedIn
-              </a>
+            <div style={socialLinksStyles}>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  style={socialLinkStyles}
+                  onMouseEnter={handleSocialHover}
+                  onMouseLeave={handleSocialLeave}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.label}
+                >
+                  {social.icon} {social.label}
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Contact Info */}
-          <div style={contactInfoStyles}>
+          <div>
             <h4 style={sectionHeaderStyles}>Get In Touch</h4>
-            <div style={contactItemStyles}>
-              <span>📧</span>
-              <a 
-                href="mailto:louisbertrandntwali01@gmail.com"
-                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-color)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
-              >
-                louisbertrandntwali01@gmail.com
-              </a>
-            </div>
-            <div style={contactItemStyles}>
-              <span>📞</span>
-              <a 
-                href="tel:3435586673"
-                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-color)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
-              >
-                (343) 558-6673
-              </a>
-            </div>
-            <div style={contactItemStyles}>
-              <span>📍</span>
-              <span>Ottawa, ON, Canada</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={contactItemStyles}>
+                <span>📧</span>
+                <a 
+                  href="mailto:louisbertrandntwali01@gmail.com"
+                  style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                  {...linkHover}
+                >
+                  louisbertrandntwali01@gmail.com
+                </a>
+              </div>
+              <div style={contactItemStyles}>
+                <span>📞</span>
+                <a 
+                  href="tel:3435586673"
+                  style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                  {...linkHover}
+                >
+                  (343) 558-6673
+                </a>
+              </div>
+              <div style={contactItemStyles}>
+                <span>📍</span>
+                <span>Ottawa, ON, Canada</span>
+              </div>
             </div>
           </div>
         </div>
@@ -377,16 +297,16 @@ export default function Footer() {
         <div style={dividerStyles}></div>
 
         {/* Copyright Section */}
-        <div style={{...copyrightSectionStyles, ...responsiveCopyrightStyles}}>
+        <div style={copyrightSectionStyles}>
           <p style={copyrightStyles}>
             © {new Date().getFullYear()} Louis Bertrand Ntwali. All rights reserved.
           </p>
           <div style={builtWithStyles}>
             <span>Built with</span>
-            <div style={techStackStyles}>
-              <span style={techIconStyles}>⚛️</span>
-              <span style={techIconStyles}>⚡</span>
-              <span style={techIconStyles}>💙</span>
+            <div style={{ display: 'flex', gap: '0.3rem' }}>
+              <span>⚛️</span>
+              <span>⚡</span>
+              <span>💙</span>
             </div>
             <span>React & Vite</span>
           </div>
