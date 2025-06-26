@@ -2,8 +2,22 @@ import TodoAppImage from '../assets/images/Projects/TodoApp.png';
 import NotesAppImage from '../assets/images/Projects/NotesApp.png';
 import EventsWebsiteImage from '../assets/images/Projects/EventsWebsite.png';
 import PalindromeCheckerImage from '../assets/images/Projects/PalindromeChecker.png';
+import { useState, useEffect } from 'react';
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive design with proper effect
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
   const homePageStyles = {
     width: '100%',
     display: 'flex',
@@ -272,8 +286,6 @@ export default function Home() {
   };
 
   // Responsive styles
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-
   const responsiveHeroTitleStyles = isMobile ? {
     fontSize: '2.5rem'
   } : {};
