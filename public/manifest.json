@@ -1,0 +1,21 @@
+{
+  "name": "Louis Bertrand Ntwali - Full-Stack Developer Portfolio",
+  "short_name": "LBN Portfolio",
+  "description": "Computer Science Student & Aspiring Full-Stack Developer Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#61dafb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon-32x32.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    }
+  ]
+}
