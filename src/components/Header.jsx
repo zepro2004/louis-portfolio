@@ -1,9 +1,22 @@
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive design with proper effect
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const headerStyles = {
     position: 'sticky',
@@ -171,8 +184,6 @@ export default function Header() {
   };
 
   // Media query styles for responsive design
-  const isMobile = window.innerWidth <= 768;
-  
   const responsiveNavbarStyles = isMobile ? {
     padding: '1rem'
   } : {};
