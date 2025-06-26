@@ -16,8 +16,7 @@ export default function Layout({ children }) {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    width: '100%',
-    background: 'linear-gradient(180deg, transparent 0%, rgba(50, 50, 50, 0.3) 100%)'
+    width: '100%'
   };
 
   return (
