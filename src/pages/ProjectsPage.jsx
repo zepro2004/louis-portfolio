@@ -78,6 +78,15 @@ export default function ProjectViewer() {
     }
   };
 
+  // Handle URL parameters for filtering
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam && ['web', 'desktop', 'utility'].includes(filterParam)) {
+      setFilter(filterParam);
+    }
+  }, []);
+
   // Keyboard navigation support
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -144,7 +153,9 @@ export default function ProjectViewer() {
     borderRadius: 'var(--radius-lg)',
     boxShadow: 'var(--shadow-sm)',
     minWidth: '100px',
-    border: '1px solid var(--border-light)'
+    border: '1px solid var(--border-light)',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
   };
 
   const statNumberStyles = {
@@ -169,7 +180,8 @@ export default function ProjectViewer() {
     borderRadius: 'var(--radius-full)',
     boxShadow: 'var(--shadow-sm)',
     justifyContent: 'center',
-    border: '1px solid var(--border-light)'
+    border: '1px solid var(--border-light)',
+    transition: 'all 0.3s ease'
   };
 
   const filterSectionStyles = {
@@ -188,7 +200,7 @@ export default function ProjectViewer() {
     color: 'var(--primary-color)',
     fontSize: 'var(--text-sm)',
     cursor: 'pointer',
-    transition: 'var(--transition-base)',
+    transition: 'all 0.3s ease',
     fontWeight: 'var(--font-medium)'
   };
 
@@ -204,7 +216,7 @@ export default function ProjectViewer() {
     fontSize: 'var(--text-base)',
     fontWeight: 'var(--font-medium)',
     cursor: 'pointer',
-    transition: 'var(--transition-base)'
+    transition: 'all 0.3s ease'
   };
 
   const activeToggleStyles = {
@@ -307,9 +319,10 @@ export default function ProjectViewer() {
     backgroundColor: 'var(--bg-card)',
     borderRadius: 'var(--radius-2xl)',
     boxShadow: 'var(--shadow-xl)',
-    transition: 'opacity 0.5s ease-in-out',
+    transition: 'all 0.5s ease',
     marginBottom: 'var(--spacing-xl)',
-    border: '1px solid var(--border-light)'
+    border: '1px solid var(--border-light)',
+    cursor: 'pointer'
   };
 
   const fadeOutStyles = {
@@ -400,7 +413,9 @@ export default function ProjectViewer() {
     borderRadius: 'var(--radius-full)',
     border: '1px solid var(--border-light)',
     minWidth: '100px',
-    textAlign: 'center'
+    textAlign: 'center',
+    transition: 'all 0.3s ease',
+    cursor: 'default'
   };
 
   const githubLinkStyles = {
@@ -459,6 +474,69 @@ export default function ProjectViewer() {
     e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
   };
 
+  // New hover handlers for interactive elements
+  const handleStatItemHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-8px) scale(1.05)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
+    e.currentTarget.style.borderColor = 'var(--primary-color)';
+  };
+
+  const handleStatItemLeave = (e) => {
+    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+    e.currentTarget.style.borderColor = 'var(--border-light)';
+  };
+
+  const handleFilterButtonHover = (e) => {
+    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
+      e.currentTarget.style.transform = 'translateY(-3px) scale(1.02)';
+      e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
+      e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
+    }
+  };
+
+  const handleFilterButtonLeave = (e) => {
+    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
+      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+      e.currentTarget.style.boxShadow = 'none';
+      e.currentTarget.style.backgroundColor = 'transparent';
+    }
+  };
+
+  const handleToggleButtonHover = (e) => {
+    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
+      e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+      e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
+    }
+  };
+
+  const handleToggleButtonLeave = (e) => {
+    if (e.currentTarget.style.backgroundColor !== 'var(--primary-color)') {
+      e.currentTarget.style.transform = 'translateY(0) scale(1)';
+      e.currentTarget.style.backgroundColor = 'transparent';
+    }
+  };
+
+  const handleProjectTileHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-10px) scale(1.02)';
+    e.currentTarget.style.boxShadow = '0 25px 50px rgba(0, 0, 0, 0.3)';
+  };
+
+  const handleProjectTileLeave = (e) => {
+    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
+  };
+
+  const handleCounterHover = (e) => {
+    e.currentTarget.style.transform = 'scale(1.05)';
+    e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
+  };
+
+  const handleCounterLeave = (e) => {
+    e.currentTarget.style.transform = 'scale(1)';
+    e.currentTarget.style.backgroundColor = 'var(--bg-section)';
+  };
+
   // Media query styles for responsive design
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
@@ -500,15 +578,27 @@ export default function ProjectViewer() {
 
         {/* Project Statistics */}
         <div style={projectStatsStyles}>
-          <div style={statItemStyles}>
+          <div 
+            style={statItemStyles}
+            onMouseEnter={handleStatItemHover}
+            onMouseLeave={handleStatItemLeave}
+          >
             <span style={statNumberStyles}>{projects.length}</span>
             <div style={statLabelStyles}>Total Projects</div>
           </div>
-          <div style={statItemStyles}>
+          <div 
+            style={statItemStyles}
+            onMouseEnter={handleStatItemHover}
+            onMouseLeave={handleStatItemLeave}
+          >
             <span style={statNumberStyles}>6+</span>
             <div style={statLabelStyles}>Technologies</div>
           </div>
-          <div style={statItemStyles}>
+          <div 
+            style={statItemStyles}
+            onMouseEnter={handleStatItemHover}
+            onMouseLeave={handleStatItemLeave}
+          >
             <span style={statNumberStyles}>2+</span>
             <div style={statLabelStyles}>Years Building</div>
           </div>
@@ -523,6 +613,8 @@ export default function ProjectViewer() {
             ...(filter === 'all' ? activeFilterStyles : {})
           }}
           onClick={() => setFilter('all')}
+          onMouseEnter={handleFilterButtonHover}
+          onMouseLeave={handleFilterButtonLeave}
         >
           All Projects
         </button>
@@ -532,6 +624,8 @@ export default function ProjectViewer() {
             ...(filter === 'web' ? activeFilterStyles : {})
           }}
           onClick={() => setFilter('web')}
+          onMouseEnter={handleFilterButtonHover}
+          onMouseLeave={handleFilterButtonLeave}
         >
           Web Apps
         </button>
@@ -541,6 +635,8 @@ export default function ProjectViewer() {
             ...(filter === 'desktop' ? activeFilterStyles : {})
           }}
           onClick={() => setFilter('desktop')}
+          onMouseEnter={handleFilterButtonHover}
+          onMouseLeave={handleFilterButtonLeave}
         >
           Desktop Apps
         </button>
@@ -550,6 +646,8 @@ export default function ProjectViewer() {
             ...(filter === 'utility' ? activeFilterStyles : {})
           }}
           onClick={() => setFilter('utility')}
+          onMouseEnter={handleFilterButtonHover}
+          onMouseLeave={handleFilterButtonLeave}
         >
           Utilities
         </button>
@@ -563,6 +661,8 @@ export default function ProjectViewer() {
             ...(viewMode === 'carousel' ? activeToggleStyles : inactiveToggleStyles)
           }}
           onClick={() => setViewMode('carousel')}
+          onMouseEnter={handleToggleButtonHover}
+          onMouseLeave={handleToggleButtonLeave}
         >
           📖 Carousel View
         </button>
@@ -572,6 +672,8 @@ export default function ProjectViewer() {
             ...(viewMode === 'grid' ? activeToggleStyles : inactiveToggleStyles)
           }}
           onClick={() => setViewMode('grid')}
+          onMouseEnter={handleToggleButtonHover}
+          onMouseLeave={handleToggleButtonLeave}
         >
           📋 Grid View
         </button>
@@ -602,6 +704,8 @@ export default function ProjectViewer() {
                 onTouchStart={onTouchStart}
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
+                onMouseEnter={handleProjectTileHover}
+                onMouseLeave={handleProjectTileLeave}
               >
                 <h2 style={{...projectTitleStyles, ...responsiveProjectTitleStyles}}>{project.title}</h2>
                 <p style={{...projectDateStyles, ...projectTilePStyles}}>📅 {project.date}</p>
@@ -636,7 +740,11 @@ export default function ProjectViewer() {
                 >
                   <span>←</span> Previous
                 </button>
-                <div style={projectCounterStyles}>
+                <div 
+                  style={projectCounterStyles}
+                  onMouseEnter={handleCounterHover}
+                  onMouseLeave={handleCounterLeave}
+                >
                   {currentIndex + 1} of {filteredProjects.length}
                 </div>
                 <button

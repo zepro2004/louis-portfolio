@@ -1,667 +1,510 @@
-import passionImage from "../assets/images/Others/Passion.jpg";
-import motivationImage from "../assets/images/Others/motivation.jpg";
-import screensImage from "../assets/images/Others/screens.jpg";
-import codingImage from "../assets/images/Others/coding.jpg";
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import TodoAppImage from '../assets/images/Projects/TodoApp.png';
+import NotesAppImage from '../assets/images/Projects/NotesApp.png';
+import EventsWebsiteImage from '../assets/images/Projects/EventsWebsite.png';
+import PalindromeCheckerImage from '../assets/images/Projects/PalindromeChecker.png';
 
 export default function Home() {
-  const [imageLoadStates, setImageLoadStates] = useState({
-    motivation: false,
-    screens: false,
-    coding: false
-  });
-  const [imagesInView, setImagesInView] = useState(false);
-  const galleryRef = useRef(null);
-
-  const handleImageLoad = (imageName) => {
-    setImageLoadStates(prev => ({
-      ...prev,
-      [imageName]: true
-    }));
-  };
-
-  // Intersection Observer for lazy loading
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setImagesInView(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: '50px'
-      }
-    );
-
-    if (galleryRef.current) {
-      observer.observe(galleryRef.current);
-    }
-
-    return () => {
-      if (galleryRef.current) {
-        observer.unobserve(galleryRef.current);
-      }
-    };
-  }, []);
   const homePageStyles = {
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     padding: '2rem 1rem',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    minHeight: '100vh'
   };
 
-  const welcomeSectionStyles = {
+  const heroSectionStyles = {
     textAlign: 'center',
     marginBottom: '4rem',
-    maxWidth: '800px',
-    margin: '0 auto 4rem auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '0 2rem'
-  };
-
-  const introSentenceStyles = {
-    fontSize: '3.5rem',
-    color: 'var(--primary-color, #a4766b)',
-    fontWeight: '300',
-    marginBottom: '1rem'
-  };
-
-  const welcomeH1Styles = {
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    marginBottom: '1.5rem',
-    background: 'linear-gradient(135deg, var(--accent-color, #667eea) 0%, var(--accent-secondary, #764ba2) 100%)',
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text'
-  };
-
-  const welcomePStyles = {
-    fontSize: '1.8rem',
-    lineHeight: '1.6',
-    color: 'var(--text-secondary, #555)',
-    marginBottom: '2rem'
-  };
-
-  const specialtyTextStyles = {
-    fontSize: '1.5rem',
-    color: 'var(--primary-color, #a4766b)',
-    fontWeight: '600',
-    marginBottom: '3rem'
-  };
-
-  const heroImageStyles = {
-    maxWidth: '600px',
-    width: '100%',
-    height: 'auto',
-    borderRadius: '20px',
+    padding: '4rem 2rem',
+    background: 'var(--bg-section)',
+    borderRadius: 'var(--radius-xl)',
+    border: '1px solid var(--border-light)',
     boxShadow: 'var(--shadow-lg)',
-    marginBottom: '3rem'
+    maxWidth: 'var(--container-md)',
+    width: '100%',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  };
+
+  const heroTitleStyles = {
+    fontSize: '3.5rem',
+    fontWeight: '700',
+    color: 'var(--primary-color)',
+    marginBottom: '1rem',
+    lineHeight: '1.2'
+  };
+
+  const heroSubtitleStyles = {
+    fontSize: '1.5rem',
+    color: 'var(--text-secondary)',
+    marginBottom: '2rem',
+    lineHeight: '1.4'
+  };
+
+  const heroDescriptionStyles = {
+    fontSize: '1.1rem',
+    color: 'var(--text-primary)',
+    marginBottom: '2rem',
+    lineHeight: '1.6',
+    maxWidth: '600px',
+    margin: '0 auto 2rem auto'
+  };
+
+  const ctaButtonStyles = {
+    padding: '1rem 2rem',
+    fontSize: '1.1rem',
+    fontWeight: '600',
+    backgroundColor: 'var(--primary-color)',
+    color: 'white',
+    border: 'none',
+    borderRadius: 'var(--radius-full)',
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+    boxShadow: 'var(--shadow-brand)',
+    textDecoration: 'none',
+    display: 'inline-block'
   };
 
   const skillsSectionStyles = {
-    width: '100%',
-    maxWidth: '1000px',
-    margin: '0 auto 4rem auto',
-    padding: '3rem 2rem',
-    background: 'var(--bg-section)',
-    borderRadius: 'var(--radius-2xl, 20px)',
-    boxShadow: 'var(--shadow-lg)',
-    border: '1px solid var(--border-light)'
+    marginBottom: '4rem',
+    maxWidth: 'var(--container-lg)',
+    width: '100%'
   };
 
-  const skillsHeaderStyles = {
-    textAlign: 'center',
-    fontSize: 'var(--text-3xl, 2.5rem)',
-    color: 'var(--primary-color, #a4766b)',
-    marginBottom: 'var(--spacing-lg, 1.5rem)',
-    fontWeight: 'var(--font-semibold, 600)'
-  };
-
-  const skillsSubtitleStyles = {
-    textAlign: 'center',
-    fontSize: 'var(--text-lg, 1.2rem)',
-    color: 'var(--text-secondary, #666)',
-    marginBottom: 'var(--spacing-2xl, 3rem)',
-    maxWidth: '600px',
-    margin: '0 auto var(--spacing-2xl, 3rem) auto',
-    lineHeight: 'var(--leading-relaxed, 1.6)'
-  };
-
-  const skillsCategoriesStyles = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-    gap: 'var(--spacing-xl, 2rem)',
-    marginBottom: 'var(--spacing-2xl, 3rem)'
-  };
-
-  const skillCategoryStyles = {
-    textAlign: 'center',
-    padding: 'var(--spacing-xl, 2rem)',
-    backgroundColor: 'var(--bg-card, white)',
-    borderRadius: 'var(--radius-xl, 15px)',
-    boxShadow: 'var(--shadow-md)',
-    border: '1px solid var(--border-light, #f0f0f0)',
-    transition: 'var(--transition-base, all 0.3s ease)'
-  };
-
-  const categoryTitleStyles = {
-    fontSize: 'var(--text-xl, 1.3rem)',
-    fontWeight: 'var(--font-semibold, bold)',
-    color: 'var(--text-primary, #333)',
-    marginBottom: 'var(--spacing-lg, 1.5rem)'
-  };
-
-  const skillsListStyles = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    gap: 'var(--spacing-sm, 0.75rem)'
-  };
-
-  const skillTagStyles = {
-    padding: 'var(--spacing-sm, 0.5rem) var(--spacing-md, 1rem)',
-    borderRadius: 'var(--radius-full, 20px)',
-    fontSize: 'var(--text-sm, 0.9rem)',
-    fontWeight: 'var(--font-medium, 500)',
-    transition: 'var(--transition-base, all 0.3s ease)',
-    cursor: 'default',
-    border: '1px solid transparent'
-  };
-
-  const primarySkillStyles = {
-    backgroundColor: 'var(--primary-color, #a4766b)',
-    color: 'white',
-    border: '1px solid var(--primary-color, #a4766b)'
-  };
-
-  const secondarySkillStyles = {
-    backgroundColor: '#e3f2fd',
-    color: '#1565c0',
-    border: '1px solid #bbdefb'
-  };
-
-  const skillLegendStyles = {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: 'var(--spacing-xl, 2rem)',
-    marginTop: 'var(--spacing-xl, 2rem)',
-    padding: 'var(--spacing-lg, 1.5rem)',
-    backgroundColor: 'var(--bg-card, white)',
-    borderRadius: 'var(--radius-lg, 12px)',
-    border: '1px solid var(--border-light, #f0f0f0)'
-  };
-
-  const legendItemStyles = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 'var(--spacing-md, 1rem)'
-  };
-
-  const legendTextStyles = {
-    fontSize: 'var(--text-sm, 0.9rem)',
-    color: 'var(--text-secondary, #666)',
-    fontWeight: 'var(--font-medium, 500)'
-  };
-
-  const featuredProjectsStyles = {
-    width: '100%',
-    maxWidth: '1000px',
-    margin: '0 auto 4rem auto'
-  };
-
-  const featuredHeaderStyles = {
-    textAlign: 'center',
+  const sectionTitleStyles = {
     fontSize: '2.5rem',
-    color: 'var(--primary-color, #a4766b)',
-    marginBottom: '2.5rem',
-    fontWeight: '600'
+    fontWeight: '600',
+    color: 'var(--primary-color)',
+    textAlign: 'center',
+    marginBottom: '2rem'
   };
 
-  const projectsGridStyles = {
+  const skillsGridStyles = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
     gap: '2rem',
     marginBottom: '2rem'
   };
 
-  const projectCardStyles = {
+  const skillCategoryStyles = {
     padding: '2rem',
-    background: 'var(--bg-card)',
-    borderRadius: 'var(--radius-xl, 15px)',
-    boxShadow: 'var(--shadow-lg)',
+    backgroundColor: 'var(--bg-card)',
+    borderRadius: 'var(--radius-xl)',
+    border: '1px solid var(--border-light)',
+    boxShadow: 'var(--shadow-md)',
     textAlign: 'center',
-    transition: 'var(--transition-base, all 0.3s ease)',
-    textDecoration: 'none',
-    color: 'inherit',
-    display: 'block',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  };
+
+  const categoryIconStyles = {
+    fontSize: '3rem',
+    marginBottom: '1rem',
+    display: 'block'
+  };
+
+  const categoryTitleStyles = {
+    fontSize: '1.3rem',
+    fontWeight: '600',
+    color: 'var(--primary-color)',
+    marginBottom: '1rem'
+  };
+
+  const categoryDescriptionStyles = {
+    fontSize: '1rem',
+    color: 'var(--text-secondary)',
+    lineHeight: '1.5'
+  };
+
+  const gallerySectionStyles = {
+    marginBottom: '4rem',
+    maxWidth: 'var(--container-lg)',
+    width: '100%'
+  };
+
+  const projectCardStyles = {
+    backgroundColor: 'var(--bg-card)',
+    borderRadius: 'var(--radius-xl)',
+    overflow: 'hidden',
+    boxShadow: 'var(--shadow-md)',
+    transition: 'all 0.3s ease',
     cursor: 'pointer',
     border: '1px solid var(--border-light)'
   };
 
+  const projectImageStyles = {
+    width: '100%',
+    height: '200px',
+    objectFit: 'cover',
+    transition: 'all 0.3s ease'
+  };
+
+  const projectContentStyles = {
+    padding: '1.5rem',
+    textAlign: 'center'
+  };
+
   const projectTitleStyles = {
-    fontSize: '1.4rem',
-    fontWeight: 'bold',
-    color: 'var(--text-primary, #333)',
-    marginBottom: '1rem'
+    fontSize: '1.2rem',
+    fontWeight: '600',
+    color: 'var(--primary-color)',
+    marginBottom: '0.5rem'
   };
 
   const projectDescriptionStyles = {
-    fontSize: '1rem',
-    color: 'var(--text-secondary, #666)',
+    fontSize: '0.9rem',
+    color: 'var(--text-secondary)',
     lineHeight: '1.5',
     marginBottom: '1rem'
   };
 
   const projectTechStyles = {
-    fontSize: '0.85rem',
-    color: 'var(--primary-color, #a4766b)',
-    fontWeight: '500'
-  };
-
-  const imagesHolderStyles = {
-    display: 'flex',
-    width: '100%',
-    maxWidth: '1200px',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    padding: '1rem 2rem',
-    marginBottom: '3rem',
-    gap: '1rem'
-  };
-
-  const imagesStyles = {
-    width: '100%',
-    height: '250px',
-    borderRadius: '15px',
-    objectFit: 'cover',
-    boxShadow: 'var(--shadow-xl)',
-    transition: 'transform 0.3s ease, opacity 0.3s ease'
-  };
-
-  const imageContainerStyles = {
-    position: 'relative',
-    flex: '1',
-    height: '250px',
-    borderRadius: '15px',
-    overflow: 'hidden',
-    boxShadow: 'var(--shadow-xl)',
-    transition: 'transform 0.3s ease'
-  };
-
-  const imagePlaceholderStyles = {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#f0f0f0',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#999',
-    fontSize: '1rem',
+    fontSize: '0.8rem',
+    color: 'var(--primary-color)',
     fontWeight: '500',
-    borderRadius: '15px',
-    background: 'linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)',
-    backgroundSize: '200% 100%',
-    animation: 'loading 1.5s infinite'
+    marginBottom: '1rem'
   };
 
-  const imageLoadedStyles = {
-    opacity: 1
-  };
-
-  const imageLoadingStyles = {
-    opacity: 0,
-    position: 'absolute',
-    top: 0,
-    left: 0
-  };
-
-  const buttonContainerStyles = {
-    display: 'flex',
-    gap: '1.5rem',
-    justifyContent: 'center',
-    marginTop: '2rem',
-    flexWrap: 'wrap'
-  };
-
-  const projectBtnsStyles = {
-    padding: '1rem 2rem',
-    backgroundColor: 'var(--primary-color, #a4766b)',
-    color: 'var(--white, white)',
-    fontSize: '1.2rem',
-    borderRadius: 'var(--radius-full, 25px)',
-    border: 'none',
+  const projectLinkStyles = {
+    display: 'inline-block',
+    padding: '0.5rem 1rem',
+    backgroundColor: 'var(--primary-color)',
+    color: 'white',
     textDecoration: 'none',
-    fontWeight: '600',
-    transition: 'var(--transition-base, all 0.3s ease)',
-    boxShadow: 'var(--shadow-brand)'
+    borderRadius: 'var(--radius-md)',
+    fontSize: '0.9rem',
+    fontWeight: '500',
+    transition: 'all 0.3s ease'
   };
 
-  const projectBtnsHoverStyles = {
-    backgroundColor: 'var(--primary-dark, #8b5a52)',
-    transform: 'translateY(-2px)',
-    boxShadow: 'var(--shadow-brand-hover)'
+  const galleryGridStyles = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '2rem'
+  };
+
+  const galleryItemStyles = {
+    borderRadius: 'var(--radius-lg)',
+    overflow: 'hidden',
+    boxShadow: 'var(--shadow-md)',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  };
+
+  const galleryImageStyles = {
+    width: '100%',
+    height: '200px',
+    objectFit: 'cover',
+    transition: 'all 0.3s ease'
+  };
+
+  // Hover handlers
+  const handleHeroSectionHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
+  };
+
+  const handleHeroSectionLeave = (e) => {
+    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
   };
 
   const handleButtonHover = (e) => {
-    Object.assign(e.currentTarget.style, projectBtnsHoverStyles);
+    e.currentTarget.style.backgroundColor = 'var(--primary-dark)';
+    e.currentTarget.style.transform = 'translateY(-2px)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-brand-hover)';
   };
 
   const handleButtonLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-color, #a4766b)';
+    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
   };
 
-  const handleImageHover = (e) => {
-    e.currentTarget.style.transform = 'scale(1.05)';
-    e.currentTarget.parentElement.style.transform = 'translateY(-5px)';
+  const handleSkillCategoryHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
   };
 
-  const handleImageLeave = (e) => {
-    e.currentTarget.style.transform = 'scale(1)';
-    e.currentTarget.parentElement.style.transform = 'translateY(0)';
+  const handleSkillCategoryLeave = (e) => {
+    e.currentTarget.style.transform = 'translateY(0) scale(1)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
   };
 
   const handleProjectCardHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-5px)';
+    e.currentTarget.style.transform = 'translateY(-8px)';
     e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
+    const img = e.currentTarget.querySelector('img');
+    if (img) img.style.transform = 'scale(1.05)';
   };
 
   const handleProjectCardLeave = (e) => {
     e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+    const img = e.currentTarget.querySelector('img');
+    if (img) img.style.transform = 'scale(1)';
   };
 
-  const handleSkillCategoryHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-3px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+  const handleProjectLinkHover = (e) => {
+    e.currentTarget.style.backgroundColor = 'var(--primary-dark)';
+    e.currentTarget.style.transform = 'translateY(-1px)';
   };
 
-  const handleSkillCategoryLeave = (e) => {
+  const handleProjectLinkLeave = (e) => {
+    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
+    e.currentTarget.style.transform = 'translateY(0)';
+  };
+
+  const handleGalleryItemHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-8px)';
+    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
+    const img = e.currentTarget.querySelector('img');
+    if (img) img.style.transform = 'scale(1.1)';
+  };
+
+  const handleGalleryItemLeave = (e) => {
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+    const img = e.currentTarget.querySelector('img');
+    if (img) img.style.transform = 'scale(1)';
   };
 
-  // Media query styles for responsive design
-  const isMobile = window.innerWidth <= 768;
-  
-  const responsiveImagesHolderStyles = isMobile ? {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    gap: '1.5rem',
-    padding: '1rem'
-  } : {};
+  // Responsive styles
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
 
-  const responsiveImagesStyles = isMobile ? {
-    width: '100%',
-    height: '220px'
-  } : {};
-
-  const responsiveImageContainerStyles = isMobile ? {
-    flex: 'none',
-    height: '220px'
-  } : {};
-
-  const responsiveIntroStyles = isMobile ? {
+  const responsiveHeroTitleStyles = isMobile ? {
     fontSize: '2.5rem'
   } : {};
 
-  const responsiveH1Styles = isMobile ? {
-    fontSize: '2.8rem'
+  const responsiveHeroSubtitleStyles = isMobile ? {
+    fontSize: '1.2rem'
   } : {};
 
-  const responsivePStyles = isMobile ? {
-    fontSize: '1.4rem'
+  const responsiveSectionTitleStyles = isMobile ? {
+    fontSize: '2rem'
   } : {};
-
-  const responsiveHeroImageStyles = isMobile ? {
-    maxWidth: '90%'
-  } : {};
-
-  const responsiveSkillsSectionStyles = isMobile ? {
-    padding: 'var(--spacing-xl, 2rem) var(--spacing-lg, 1.5rem)'
-  } : {};
-
-  const responsiveSkillsCategoriesStyles = isMobile ? {
-    gridTemplateColumns: '1fr',
-    gap: 'var(--spacing-lg, 1.5rem)'
-  } : {};
-
-  const responsiveProjectsGridStyles = isMobile ? {
-    gridTemplateColumns: '1fr',
-    gap: '1.5rem'
-  } : {};
-
-  // Add CSS animation for loading placeholder
-  const loadingAnimation = `
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-  `;
-
-  // Create an optimized image component with WebP support
-  const OptimizedImage = ({ src, alt, imageName, containerStyle, imageStyle }) => (
-    <div style={containerStyle}>
-      {!imageLoadStates[imageName] && (
-        <div style={imagePlaceholderStyles}>
-          <span>📸 Loading...</span>
-        </div>
-      )}
-      {imagesInView && (
-        <picture>
-          <img
-            src={src}
-            alt={alt}
-            style={{
-              ...imageStyle,
-              ...(imageLoadStates[imageName] ? imageLoadedStyles : imageLoadingStyles)
-            }}
-            onLoad={() => handleImageLoad(imageName)}
-            onMouseEnter={handleImageHover}
-            onMouseLeave={handleImageLeave}
-            loading="lazy"
-            decoding="async"
-            fetchPriority={imageName === 'motivation' ? 'high' : 'low'}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.parentElement.innerHTML = '<div style="width: 100%; height: 100%; background: var(--bg-section); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); border-radius: var(--radius-lg); font-size: 2rem;">🖼️</div>';
-            }}
-          />
-        </picture>
-      )}
-    </div>
-  );
 
   return (
     <div style={homePageStyles}>
-      {/* Preload critical images */}
-      <link rel="preload" as="image" href={motivationImage} />
-      
-      {/* Add CSS animation */}
-      <style>
-        {loadingAnimation}
-      </style>
-      
-      <main>
-        <section id="welcome-section" style={welcomeSectionStyles}>
-          {/* Introduction section */}
-          <p style={{...introSentenceStyles, ...responsiveIntroStyles}}>Hello, I'm</p>
-          <h1 style={{...welcomeH1Styles, ...responsiveH1Styles}}>Louis Bertrand Ntwali</h1>
-          <p style={{...welcomePStyles, ...responsivePStyles}}>
-            Computer Programming Student at <strong>Algonquin College</strong>
-          </p>
-          <p style={{...specialtyTextStyles, ...responsivePStyles}}>
-            Building efficient software solutions • Database design • Full-stack development
-          </p>
-          <img
-            src={passionImage}
-            alt="Passion for programming and technology"
-            style={{...heroImageStyles, ...responsiveHeroImageStyles}}
-          />
-        </section>
-
-        {/* Skills Highlights Section */}
-        <section style={{...skillsSectionStyles, ...responsiveSkillsSectionStyles}}>
-          <h2 style={skillsHeaderStyles}>Core Technical Skills</h2>
-          <p style={skillsSubtitleStyles}>
-            My primary technology stack and key competencies - 
-            <Link to="/about" style={{color: 'var(--primary-color)', textDecoration: 'none', fontWeight: 'bold'}}>
-              {' '}view complete skills breakdown →
-            </Link>
-          </p>
-          
-          <div style={{...skillsCategoriesStyles, ...responsiveSkillsCategoriesStyles}}>
-            <div 
-              style={skillCategoryStyles}
-              onMouseEnter={handleSkillCategoryHover}
-              onMouseLeave={handleSkillCategoryLeave}
-            >
-              <h3 style={categoryTitleStyles}>💻 Programming</h3>
-              <div style={skillsListStyles}>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Java</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>JavaScript</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Python</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>SQL</span>
-              </div>
-            </div>
-            
-            <div style={skillCategoryStyles}>
-              <h3 style={categoryTitleStyles}>🌐 Web Development</h3>
-              <div style={skillsListStyles}>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>React</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Node.js</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>HTML/CSS</span>
-                <span style={{...skillTagStyles, ...secondarySkillStyles}}>Bootstrap</span>
-              </div>
-            </div>
-            
-            <div style={skillCategoryStyles}>
-              <h3 style={categoryTitleStyles}>🗄️ Database</h3>
-              <div style={skillsListStyles}>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Oracle</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>MySQL</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>PostgreSQL</span>
-                <span style={{...skillTagStyles, ...secondarySkillStyles}}>MongoDB</span>
-              </div>
-            </div>
-            
-            <div style={skillCategoryStyles}>
-              <h3 style={categoryTitleStyles}>🛠️ Development Tools</h3>
-              <div style={skillsListStyles}>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Git & GitHub</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>VS Code</span>
-                <span style={{...skillTagStyles, ...primarySkillStyles}}>Maven</span>
-                <span style={{...skillTagStyles, ...secondarySkillStyles}}>Docker</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Projects Preview */}
-        <section style={featuredProjectsStyles}>
-          <h2 style={featuredHeaderStyles}>Featured Projects</h2>
-          <div style={{...projectsGridStyles, ...responsiveProjectsGridStyles}}>
-            <a
-              href="https://github.com/zepro2004/Notes-App"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={projectCardStyles}
-              onMouseEnter={handleProjectCardHover}
-              onMouseLeave={handleProjectCardLeave}
-            >
-              <h3 style={projectTitleStyles}>Notes App</h3>
-              <p style={projectDescriptionStyles}>
-                Full-stack application for managing notes and todos with Java Swing frontend and MySQL backend.
-              </p>
-              <p style={projectTechStyles}>Java • Maven • SQL</p>
-            </a>
-            <a
-              href="https://github.com/zepro2004/Event-Attendees-Management-Website"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={projectCardStyles}
-              onMouseEnter={handleProjectCardHover}
-              onMouseLeave={handleProjectCardLeave}
-            >
-              <h3 style={projectTitleStyles}>Events Website</h3>
-              <p style={projectDescriptionStyles}>
-                Dynamic event management system with RSVP functionality and admin controls.
-              </p>
-              <p style={projectTechStyles}>JavaScript • PHP • SQL • HTML/CSS</p>
-            </a>
-            <a
-              href="https://jsfiddle.net/bcbzepro/bhLc2a3p/1/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={projectCardStyles}
-              onMouseEnter={handleProjectCardHover}
-              onMouseLeave={handleProjectCardLeave}
-            >
-              <h3 style={projectTitleStyles}>Palindrome Checker</h3>
-              <p style={projectDescriptionStyles}>
-                Interactive web utility that checks if words or sentences are palindromes, ignoring spaces and special characters.
-              </p>
-              <p style={projectTechStyles}>JavaScript • HTML • CSS</p>
-            </a>
-          </div>
-        </section>
-
-        {/* Visual Gallery - Optimized with Lazy Loading */}
-        <div ref={galleryRef} style={{...imagesHolderStyles, ...responsiveImagesHolderStyles}}>
-          <OptimizedImage
-            src={motivationImage}
-            alt="Motivation and inspiration"
-            imageName="motivation"
-            containerStyle={{...imageContainerStyles, ...responsiveImageContainerStyles}}
-            imageStyle={{...imagesStyles, ...responsiveImagesStyles}}
-          />
-          <OptimizedImage
-            src={screensImage}
-            alt="Multiple programming environments and screens"
-            imageName="screens"
-            containerStyle={{...imageContainerStyles, ...responsiveImageContainerStyles}}
-            imageStyle={{...imagesStyles, ...responsiveImagesStyles}}
-          />
-          <OptimizedImage
-            src={codingImage}
-            alt="Programming and development"
-            imageName="coding"
-            containerStyle={{...imageContainerStyles, ...responsiveImageContainerStyles}}
-            imageStyle={{...imagesStyles, ...responsiveImagesStyles}}
-          />
-        </div>
-
-        <div style={buttonContainerStyles}>
-          <Link
-            to="/projects"
-            style={projectBtnsStyles}
-            onMouseEnter={handleButtonHover}
-            onMouseLeave={handleButtonLeave}
-          >
-            View All Projects
-          </Link>
-          <Link
-            to="/about"
-            style={projectBtnsStyles}
+      {/* Hero Section */}
+      <section 
+        style={heroSectionStyles}
+        onMouseEnter={handleHeroSectionHover}
+        onMouseLeave={handleHeroSectionLeave}
+      >
+        <h1 style={{...heroTitleStyles, ...responsiveHeroTitleStyles}}>
+          Hi, I'm Louis
+        </h1>
+        <p style={{...heroSubtitleStyles, ...responsiveHeroSubtitleStyles}}>
+          Computer Science Student & Aspiring Full-Stack Developer
+        </p>
+        <p style={heroDescriptionStyles}>
+          Welcome to my portfolio! I'm passionate about creating innovative software solutions 
+          and building amazing user experiences. Currently pursuing my Computer Science degree 
+          while developing real-world projects and gaining hands-on experience in full-stack development.
+        </p>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <a
+            href="/about"
+            style={ctaButtonStyles}
             onMouseEnter={handleButtonHover}
             onMouseLeave={handleButtonLeave}
           >
             Learn More About Me
-          </Link>
+          </a>
+          <a
+            href="/projects"
+            style={{
+              ...ctaButtonStyles,
+              backgroundColor: 'transparent',
+              color: 'var(--primary-color)',
+              border: '2px solid var(--primary-color)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'var(--primary-color)';
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = 'var(--primary-color)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            View My Projects
+          </a>
         </div>
-      </main>
+      </section>
+
+      {/* Skills Section */}
+      <section style={skillsSectionStyles}>
+        <h2 style={{...sectionTitleStyles, ...responsiveSectionTitleStyles}}>
+          What I Do
+        </h2>
+        <div style={skillsGridStyles}>
+          <div 
+            style={skillCategoryStyles}
+            onMouseEnter={handleSkillCategoryHover}
+            onMouseLeave={handleSkillCategoryLeave}
+          >
+            <span style={categoryIconStyles}>💻</span>
+            <h3 style={categoryTitleStyles}>Frontend Development</h3>
+            <p style={categoryDescriptionStyles}>
+              Creating responsive and interactive user interfaces using React, JavaScript, HTML, and CSS.
+            </p>
+          </div>
+
+          <div 
+            style={skillCategoryStyles}
+            onMouseEnter={handleSkillCategoryHover}
+            onMouseLeave={handleSkillCategoryLeave}
+          >
+            <span style={categoryIconStyles}>⚙️</span>
+            <h3 style={categoryTitleStyles}>Backend Development</h3>
+            <p style={categoryDescriptionStyles}>
+              Building robust server-side applications with Node.js, Java, and database management.
+            </p>
+          </div>
+
+          <div 
+            style={skillCategoryStyles}
+            onMouseEnter={handleSkillCategoryHover}
+            onMouseLeave={handleSkillCategoryLeave}
+          >
+            <span style={categoryIconStyles}>🗄️</span>
+            <h3 style={categoryTitleStyles}>Database Design</h3>
+            <p style={categoryDescriptionStyles}>
+              Designing and optimizing databases using MySQL, Oracle, and SQL for efficient data management.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Projects Section */}
+      <section style={gallerySectionStyles}>
+        <h2 style={{...sectionTitleStyles, ...responsiveSectionTitleStyles}}>
+          Featured Projects
+        </h2>
+        <div style={galleryGridStyles}>
+          <div 
+            style={projectCardStyles}
+            onMouseEnter={handleProjectCardHover}
+            onMouseLeave={handleProjectCardLeave}
+          >
+            <img 
+              src={NotesAppImage} 
+              alt="Notes Application" 
+              style={projectImageStyles}
+            />
+            <div style={projectContentStyles}>
+              <h3 style={projectTitleStyles}>Notes App</h3>
+              <p style={projectDescriptionStyles}>
+                Stores Notes and ToDos. Uses Java Swing for the frontend and MySQL for the backend. Maven is used as the build tool.
+              </p>
+              <p style={projectTechStyles}>
+                🛠️ Java, Maven, and SQL
+              </p>
+              <a
+                href="https://github.com/zepro2004/Notes-App"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={projectLinkStyles}
+                onMouseEnter={handleProjectLinkHover}
+                onMouseLeave={handleProjectLinkLeave}
+              >
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+
+          <div 
+            style={projectCardStyles}
+            onMouseEnter={handleProjectCardHover}
+            onMouseLeave={handleProjectCardLeave}
+          >
+            <img 
+              src={EventsWebsiteImage} 
+              alt="Events Website" 
+              style={projectImageStyles}
+            />
+            <div style={projectContentStyles}>
+              <h3 style={projectTitleStyles}>Events Management Website</h3>
+              <p style={projectDescriptionStyles}>
+                A dynamic website to manage events. Attendees can RSVP to events, whereas admins can create and delete events.
+              </p>
+              <p style={projectTechStyles}>
+                🛠️ JavaScript, PHP, SQL, HTML, CSS
+              </p>
+              <a
+                href="https://github.com/zepro2004/Event-Attendees-Management-Website"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={projectLinkStyles}
+                onMouseEnter={handleProjectLinkHover}
+                onMouseLeave={handleProjectLinkLeave}
+              >
+                View on GitHub →
+              </a>
+            </div>
+          </div>
+
+          <div 
+            style={projectCardStyles}
+            onMouseEnter={handleProjectCardHover}
+            onMouseLeave={handleProjectCardLeave}
+          >
+            <img 
+              src={PalindromeCheckerImage} 
+              alt="Web Utilities Collection" 
+              style={projectImageStyles}
+            />
+            <div style={projectContentStyles}>
+              <h3 style={projectTitleStyles}>Web Utilities Collection</h3>
+              <p style={projectDescriptionStyles}>
+                A collection of utility tools including decimal to binary converter, palindrome checker, telephone validator, and roman numeral converter.
+              </p>
+              <p style={projectTechStyles}>
+                🛠️ JavaScript, HTML, CSS
+              </p>
+              <a
+                href="/projects?filter=utility"
+                style={projectLinkStyles}
+                onMouseEnter={handleProjectLinkHover}
+                onMouseLeave={handleProjectLinkLeave}
+              >
+                View Utilities →
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <a
+            href="/projects"
+            style={{
+              ...ctaButtonStyles,
+              backgroundColor: 'transparent',
+              color: 'var(--primary-color)',
+              border: '2px solid var(--primary-color)',
+              fontSize: '1rem'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'var(--primary-color)';
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = 'var(--primary-color)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            🚀 View All Projects
+          </a>
+        </div>
+      </section>
     </div>
   );
 }
