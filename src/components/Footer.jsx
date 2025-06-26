@@ -89,7 +89,7 @@ export default function Footer() {
 
   const skillTagStyles = {
     backgroundColor: 'var(--accent-brand-20)',
-    color: '#a4766b',
+    color: 'var(--primary-color)',
     padding: '0.3rem 0.8rem',
     borderRadius: '12px',
     fontSize: '0.8rem',
@@ -149,7 +149,7 @@ export default function Footer() {
   };
 
   const quickLinkStyles = {
-    color: '#bdc3c7',
+    color: 'var(--text-secondary)',
     textDecoration: 'none',
     fontSize: '1rem',
     transition: 'all 0.3s ease',
@@ -167,7 +167,7 @@ export default function Footer() {
     display: 'flex',
     alignItems: 'center',
     gap: '0.8rem',
-    color: '#bdc3c7',
+    color: 'var(--text-secondary)',
     fontSize: '0.95rem'
   };
 
@@ -190,7 +190,7 @@ export default function Footer() {
 
   const copyrightStyles = {
     fontSize: '0.9rem',
-    color: '#95a5a6',
+    color: 'var(--text-muted)',
     margin: 0
   };
 
@@ -199,7 +199,7 @@ export default function Footer() {
     alignItems: 'center',
     gap: '0.5rem',
     fontSize: '0.9rem',
-    color: '#95a5a6'
+    color: 'var(--text-muted)'
   };
 
   const techStackStyles = {
@@ -232,7 +232,7 @@ export default function Footer() {
   };
 
   const handleQuickLinkLeave = (e) => {
-    e.currentTarget.style.color = '#bdc3c7';
+    e.currentTarget.style.color = 'var(--text-secondary)';
     e.currentTarget.style.transform = 'translateX(0)';
   };
 
@@ -348,9 +348,9 @@ export default function Footer() {
               <span>📧</span>
               <a 
                 href="mailto:louisbertrandntwali01@gmail.com"
-                style={{ color: '#bdc3c7', textDecoration: 'none' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#a4766b'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#bdc3c7'}
+                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-color)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
               >
                 louisbertrandntwali01@gmail.com
               </a>
@@ -359,9 +359,9 @@ export default function Footer() {
               <span>📞</span>
               <a 
                 href="tel:3435586673"
-                style={{ color: '#bdc3c7', textDecoration: 'none' }}
-                onMouseEnter={(e) => e.currentTarget.style.color = '#a4766b'}
-                onMouseLeave={(e) => e.currentTarget.style.color = '#bdc3c7'}
+                style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary-color)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
               >
                 (343) 558-6673
               </a>

@@ -19,13 +19,20 @@ export default function Header() {
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
-  // Close mobile menu on escape key
+  // Close mobile menu on escape key and manage focus
   useEffect(() => {
     const handleEscapeKey = (event) => {
       if (event.key === 'Escape' && isMobileMenuOpen) {
         setIsMobileMenuOpen(false);
       }
     };
+
+    // Disable body scroll when mobile menu is open
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
 
     document.addEventListener('keydown', handleEscapeKey);
     return () => document.removeEventListener('keydown', handleEscapeKey);
@@ -71,9 +78,9 @@ export default function Header() {
   const logoStyles = {
     fontSize: '1.8rem',
     fontWeight: 'bold',
-    color: 'var(--primary-color, #a4766b)',
+    color: 'var(--primary-color)',
     textDecoration: 'none',
-    background: 'linear-gradient(135deg, var(--primary-color, #a4766b) 0%, var(--primary-dark, #8b5a52) 100%)',
+    background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text'
@@ -340,7 +347,14 @@ export default function Header() {
         <button 
           style={{...mobileMenuButtonStyles, ...responsiveMobileMenuButtonStyles}}
           onClick={toggleMobileMenu}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              toggleMobileMenu();
+            }
+          }}
           aria-label="Toggle mobile menu"
+          aria-expanded={isMobileMenuOpen}
         >
           <div style={{
             ...hamburgerLineStyles,

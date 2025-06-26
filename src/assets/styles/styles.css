@@ -1,5 +1,10 @@
 /* ===== DESIGN SYSTEM & GLOBAL STYLES ===== */
 
+/* Smooth scrolling for better UX */
+html {
+  scroll-behavior: smooth;
+}
+
 /* CSS Custom Properties (Variables) for consistent styling */
 :root {
   /* Brand Colors - Lighter Professional Theme with Better Contrast */

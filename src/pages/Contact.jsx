@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function Contact() {
+  usePageTitle('Contact Me');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -9,6 +12,18 @@ export default function Contact() {
     message: ''
   });
   const [errors, setErrors] = useState({});
+
+  // Handle responsive design with proper effect
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
   const contactPageStyles = {
     width: '100%',
     display: 'flex',
@@ -129,18 +144,18 @@ export default function Contact() {
     padding: '1rem 2rem',
     fontSize: '1.1rem',
     fontWeight: '600',
-    backgroundColor: 'var(--primary-color, #a4766b)',
-    color: 'var(--white, white)',
+    backgroundColor: 'var(--primary-color)',
+    color: 'white',
     border: 'none',
-    borderRadius: 'var(--radius-full, 25px)',
+    borderRadius: 'var(--radius-full)',
     cursor: 'pointer',
-    transition: 'var(--transition-base, all 0.3s ease)',
+    transition: 'var(--transition-base)',
     boxShadow: 'var(--shadow-brand)',
     marginTop: '1rem'
   };
 
   const buttonHoverStyles = {
-    backgroundColor: 'var(--primary-dark, #8b5a52)',
+    backgroundColor: 'var(--primary-dark)',
     transform: 'translateY(-2px)',
     boxShadow: 'var(--shadow-brand-hover)'
   };
@@ -154,7 +169,7 @@ export default function Contact() {
 
   const loadingButtonStyles = {
     ...buttonStyles,
-    backgroundColor: '#cccccc',
+    backgroundColor: 'var(--gray-300)',
     cursor: 'not-allowed',
     opacity: 0.7
   };
@@ -169,18 +184,18 @@ export default function Contact() {
   };
 
   const handleButtonLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-color, #a4766b)';
+    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
     e.currentTarget.style.transform = 'translateY(0)';
     e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
   };
 
   const handleInputFocus = (e) => {
-    e.currentTarget.style.borderColor = '#a4766b';
+    e.currentTarget.style.borderColor = 'var(--primary-color)';
     e.currentTarget.style.boxShadow = '0 0 0 3px var(--accent-brand-10)';
   };
 
   const handleInputBlur = (e) => {
-    e.currentTarget.style.borderColor = '#e9ecef';
+    e.currentTarget.style.borderColor = 'var(--border-color)';
     e.currentTarget.style.boxShadow = 'none';
     
     // Validate individual field on blur
@@ -210,15 +225,15 @@ export default function Contact() {
   };
 
   const handleMethodHover = (e) => {
-    e.currentTarget.style.backgroundColor = '#a4766b';
+    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
     e.currentTarget.style.color = 'white';
-    e.currentTarget.style.borderColor = '#a4766b';
+    e.currentTarget.style.borderColor = 'var(--primary-color)';
   };
 
   const handleMethodLeave = (e) => {
-    e.currentTarget.style.backgroundColor = '#f8f9fa';
-    e.currentTarget.style.color = '#a4766b';
-    e.currentTarget.style.borderColor = 'transparent';
+    e.currentTarget.style.backgroundColor = 'var(--bg-section)';
+    e.currentTarget.style.color = 'var(--primary-color)';
+    e.currentTarget.style.borderColor = 'var(--border-light)';
   };
 
   // Form validation
@@ -304,9 +319,7 @@ export default function Contact() {
     }
   };
 
-  // Media query styles for responsive design
-  const isMobile = window.innerWidth <= 768;
-  
+  // Responsive styles
   const responsiveHeaderStyles = isMobile ? {
     fontSize: '2.5rem'
   } : {};

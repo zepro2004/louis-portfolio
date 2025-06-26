@@ -1,13 +1,28 @@
 import projects from "../components/Projects";
 import { useState, useEffect } from "react";
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function ProjectViewer() {
+  usePageTitle('My Projects');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(false);
   const [viewMode, setViewMode] = useState('carousel'); // 'carousel' or 'grid'
   const [filter, setFilter] = useState('all'); // 'all', 'web', 'desktop', 'utility'
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive design with proper effect
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   // Filter projects based on selected filter
   const getFilteredProjects = () => {
@@ -537,9 +552,7 @@ export default function ProjectViewer() {
     e.currentTarget.style.backgroundColor = 'var(--bg-section)';
   };
 
-  // Media query styles for responsive design
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-
+  // Responsive styles
   const responsivePageStyles = isMobile ? {
     padding: '1rem'
   } : {};
@@ -723,6 +736,7 @@ export default function ProjectViewer() {
                     src={project.image}
                     alt={project.title}
                     style={imgStyles}
+                    loading="lazy"
                     onMouseEnter={handleImageHover}
                     onMouseLeave={handleImageLeave}
                   />
@@ -825,6 +839,7 @@ export default function ProjectViewer() {
                   src={project.image}
                   alt={project.title}
                   style={gridProjectImageStyles}
+                  loading="lazy"
                 />
               </a>
               <div style={gridProjectContentStyles}>

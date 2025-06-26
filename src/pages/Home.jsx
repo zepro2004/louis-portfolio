@@ -1,10 +1,11 @@
-import TodoAppImage from '../assets/images/Projects/TodoApp.png';
 import NotesAppImage from '../assets/images/Projects/NotesApp.png';
 import EventsWebsiteImage from '../assets/images/Projects/EventsWebsite.png';
 import PalindromeCheckerImage from '../assets/images/Projects/PalindromeChecker.png';
 import { useState, useEffect } from 'react';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function Home() {
+  usePageTitle(''); // Home page uses the default title
   const [isMobile, setIsMobile] = useState(false);
 
   // Handle responsive design with proper effect
@@ -199,21 +200,6 @@ export default function Home() {
     gap: '2rem'
   };
 
-  const galleryItemStyles = {
-    borderRadius: 'var(--radius-lg)',
-    overflow: 'hidden',
-    boxShadow: 'var(--shadow-md)',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer'
-  };
-
-  const galleryImageStyles = {
-    width: '100%',
-    height: '200px',
-    objectFit: 'cover',
-    transition: 'all 0.3s ease'
-  };
-
   // Hover handlers
   const handleHeroSectionHover = (e) => {
     e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
@@ -269,20 +255,6 @@ export default function Home() {
   const handleProjectLinkLeave = (e) => {
     e.currentTarget.style.backgroundColor = 'var(--primary-color)';
     e.currentTarget.style.transform = 'translateY(0)';
-  };
-
-  const handleGalleryItemHover = (e) => {
-    e.currentTarget.style.transform = 'translateY(-8px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
-    const img = e.currentTarget.querySelector('img');
-    if (img) img.style.transform = 'scale(1.1)';
-  };
-
-  const handleGalleryItemLeave = (e) => {
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-    const img = e.currentTarget.querySelector('img');
-    if (img) img.style.transform = 'scale(1)';
   };
 
   // Responsive styles
@@ -409,6 +381,7 @@ export default function Home() {
               src={NotesAppImage} 
               alt="Notes Application" 
               style={projectImageStyles}
+              loading="lazy"
             />
             <div style={projectContentStyles}>
               <h3 style={projectTitleStyles}>Notes App</h3>
@@ -440,6 +413,7 @@ export default function Home() {
               src={EventsWebsiteImage} 
               alt="Events Website" 
               style={projectImageStyles}
+              loading="lazy"
             />
             <div style={projectContentStyles}>
               <h3 style={projectTitleStyles}>Events Management Website</h3>
@@ -471,6 +445,7 @@ export default function Home() {
               src={PalindromeCheckerImage} 
               alt="Web Utilities Collection" 
               style={projectImageStyles}
+              loading="lazy"
             />
             <div style={projectContentStyles}>
               <h3 style={projectTitleStyles}>Web Utilities Collection</h3>

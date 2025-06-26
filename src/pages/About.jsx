@@ -1,4 +1,7 @@
+import { usePageTitle } from '../hooks/usePageTitle';
+
 export default function About() {
+  usePageTitle('About Me');
   const aboutPageStyles = {
     width: '100%',
     display: 'flex',
@@ -77,7 +80,7 @@ export default function About() {
 
   const skillTagStyles = {
     backgroundColor: 'var(--primary-color)',
-    color: '#1a1a1a',
+    color: 'var(--bg-primary)',
     padding: '0.4rem 0.8rem',
     borderRadius: '15px',
     fontSize: '0.8rem',
