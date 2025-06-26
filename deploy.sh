@@ -1,22 +1,52 @@
 #!/bin/bash
 
-# Exit if any command fails
+# Stop the script if any command fails
 set -e
 
-# Path to your GitHub Pages repo
-DEPLOY_DIR=../zepro2004.github.io/
+echo "🚀 Starting deployment..."
 
-# Build the project
+# --- Configuration ---
+# The directory of your local clone of the zepro2004.github.io repo.
+# Note: Using a more descriptive variable name.
+GH_PAGES_DIR="../zepro2004.github.io/"
+
+# --- Safety Check ---
+# Check if the deployment directory actually exists.
+if [ ! -d "$GH_PAGES_DIR" ]; then
+  echo "❌ Deployment Error: Directory $GH_PAGES_DIR does not exist."
+  echo "Please clone your GitHub Pages repo next to your project folder."
+  exit 1
+fi
+
+# --- Build Step ---
+echo "📦 Building the project..."
 npm run build
+echo "✅ Build complete."
 
-# Copy build to deploy repo
-rsync -av --delete dist/ $DEPLOY_DIR/
+# --- Deploy Step ---
+echo "🚚 Syncing files to $GH_PAGES_DIR..."
+# Use rsync to copy files.
+# --delete removes old files from the destination.
+# --exclude='.git' is CRITICAL to prevent deleting the git repo in the destination.
+rsync -av --delete --exclude='.git' dist/ "$GH_PAGES_DIR"
+echo "✅ Sync complete."
 
-# Optional: auto-commit
-cd $GH_PAGES_DIR
+# --- Git Commit and Push ---
+echo "📖 Committing and pushing to GitHub..."
+# Navigate into the GitHub Pages repo
+cd "$GH_PAGES_DIR"
+
+# Add all changes
 git add .
-git commit -m "Deploy $(date '+%Y-%m-%d %H:%M')"
+
+# Commit with a timestamp
+git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
+
+# Push to the remote repository
 git push
 
-# Return to the original directory
+echo "🎉 Deployment successful!"
+
+# Return to the previous directory
 cd -
+
