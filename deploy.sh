@@ -1,14 +1,16 @@
 #!/bin/bash
 
+# Exit if any command fails
+set -e
+
 # Path to your GitHub Pages repo
-GH_PAGES_DIR=../zepro2004.github.io/
+DEPLOY_DIR=../zepro2004.github.io/
 
 # Build the project
 npm run build
 
-# Clean and copy build files
-rm -rf $GH_PAGES_DIR/*
-cp -r dist/* $GH_PAGES_DIR/
+# Copy build to deploy repo
+rsync -av --delete dist/ $DEPLOY_DIR/
 
 # Optional: auto-commit
 cd $GH_PAGES_DIR
@@ -16,3 +18,5 @@ git add .
 git commit -m "Deploy $(date '+%Y-%m-%d %H:%M')"
 git push
 
+# Return to the original directory
+cd -
