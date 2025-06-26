@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export default function Header() {
   const location = useLocation();
@@ -17,6 +18,31 @@ export default function Header() {
     
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
+
+  // Close mobile menu on escape key
+  useEffect(() => {
+    const handleEscapeKey = (event) => {
+      if (event.key === 'Escape' && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscapeKey);
+    return () => document.removeEventListener('keydown', handleEscapeKey);
+  }, [isMobileMenuOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobile && isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobile, isMobileMenuOpen]);
 
   const headerStyles = {
     position: 'sticky',
@@ -87,62 +113,95 @@ export default function Header() {
     display: 'none',
     flexDirection: 'column',
     justifyContent: 'space-around',
-    width: '2rem',
-    height: '2rem',
-    background: 'transparent',
-    border: 'none',
+    width: '2.5rem',
+    height: '2.5rem',
+    background: isMobileMenuOpen 
+      ? 'rgba(164, 118, 107, 0.2)' 
+      : 'rgba(164, 118, 107, 0.1)',
+    border: '2px solid var(--primary-color)',
+    borderRadius: '8px',
     cursor: 'pointer',
-    padding: 0,
-    zIndex: 10
+    padding: '0.25rem',
+    zIndex: 1001,
+    position: 'fixed',
+    top: '1rem',
+    right: '1rem',
+    transition: 'all 0.3s ease',
+    backdropFilter: 'blur(10px)',
+    boxShadow: isMobileMenuOpen 
+      ? '0 6px 20px rgba(164, 118, 107, 0.3)' 
+      : '0 4px 12px rgba(0, 0, 0, 0.15)',
+    transform: isMobileMenuOpen ? 'scale(1.05)' : 'scale(1)'
   };
 
   const hamburgerLineStyles = {
-    width: '2rem',
-    height: '0.25rem',
+    width: '100%',
+    height: '0.2rem',
     background: 'var(--primary-color)',
     borderRadius: '10px',
     transition: 'all 0.3s linear',
     position: 'relative',
-    transformOrigin: '1px'
+    transformOrigin: 'center'
   };
 
   const mobileNavStyles = {
     position: 'fixed',
-    top: '0',
-    left: '0',
-    right: '0',
-    bottom: '0',
-    backgroundColor: 'var(--bg-overlay)',
+    top: '5rem',
+    right: '1rem',
+    width: '280px',
+    maxHeight: 'calc(100vh - 6rem)',
+    backgroundColor: 'rgba(15, 23, 42, 0.95)',
     backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(164, 118, 107, 0.3)',
+    borderRadius: '12px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: '2rem',
-    transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(-100%)',
-    transition: 'transform 0.3s ease-in-out',
-    zIndex: 999
+    padding: '1.5rem 0',
+    gap: '0.5rem',
+    transform: isMobileMenuOpen ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.95)',
+    opacity: isMobileMenuOpen ? '1' : '0',
+    visibility: isMobileMenuOpen ? 'visible' : 'hidden',
+    transition: 'all 0.3s ease-in-out',
+    zIndex: 1000,
+    overflowY: 'auto'
   };
 
   const mobileNavLinkStyles = {
-    fontSize: '2rem',
-    fontWeight: '600',
+    fontSize: '1.1rem',
+    fontWeight: '500',
     color: 'var(--text-primary)',
     textDecoration: 'none',
-    padding: '1rem',
-    borderRadius: '15px',
-    transition: 'all 0.3s ease'
+    padding: '0.75rem 1.5rem',
+    margin: '0 0.5rem',
+    borderRadius: '8px',
+    transition: 'all 0.3s ease',
+    borderLeft: '3px solid transparent',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem'
   };
 
   const closeMobileMenuStyles = {
-    position: 'absolute',
-    top: '2rem',
-    right: '2rem',
-    background: 'none',
-    border: 'none',
-    fontSize: '2.5rem',
-    color: 'var(--primary-color)',
-    cursor: 'pointer'
+    display: 'none' // Remove close button since we're using a dropdown style
+  };
+
+  const mobileNavLinkActiveStyles = {
+    backgroundColor: 'rgba(164, 118, 107, 0.2)',
+    borderLeftColor: 'var(--primary-color)',
+    color: 'var(--primary-color)'
+  };
+
+  // Add overlay to close menu when clicking outside
+  const mobileOverlayStyles = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    zIndex: 999,
+    backdropFilter: 'blur(2px)'
   };
 
   const handleLinkHover = (e) => {
@@ -160,13 +219,19 @@ export default function Header() {
   };
 
   const handleMobileNavLinkHover = (e) => {
-    e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
-    e.currentTarget.style.transform = 'scale(1.05)';
+    if (!isActiveLink(e.currentTarget.getAttribute('href'))) {
+      e.currentTarget.style.backgroundColor = 'rgba(164, 118, 107, 0.15)';
+      e.currentTarget.style.borderLeftColor = 'rgba(164, 118, 107, 0.5)';
+      e.currentTarget.style.transform = 'translateX(5px)';
+    }
   };
 
   const handleMobileNavLinkLeave = (e) => {
-    e.currentTarget.style.backgroundColor = 'transparent';
-    e.currentTarget.style.transform = 'scale(1)';
+    if (!isActiveLink(e.currentTarget.getAttribute('href'))) {
+      e.currentTarget.style.backgroundColor = 'transparent';
+      e.currentTarget.style.borderLeftColor = 'transparent';
+      e.currentTarget.style.transform = 'translateX(0)';
+    }
   };
 
   const isActiveLink = (path) => {
@@ -199,6 +264,22 @@ export default function Header() {
   const responsiveLogoStyles = isMobile ? {
     fontSize: '1.5rem'
   } : {};
+
+  // Close mobile menu when clicking outside
+  const handleOverlayClick = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  // Add icons for mobile nav links
+  const getNavIcon = (path) => {
+    switch(path) {
+      case '/': return '🏠';
+      case '/about': return '👤';
+      case '/projects': return '💼';
+      case '/contact': return '📧';
+      default: return '';
+    }
+  };
 
   return (
     <header style={headerStyles}>
@@ -255,7 +336,7 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button - Always visible on mobile */}
         <button 
           style={{...mobileMenuButtonStyles, ...responsiveMobileMenuButtonStyles}}
           onClick={toggleMobileMenu}
@@ -263,8 +344,7 @@ export default function Header() {
         >
           <div style={{
             ...hamburgerLineStyles,
-            transform: isMobileMenuOpen ? 'rotate(45deg)' : 'rotate(0)',
-            transformOrigin: '1px'
+            transform: isMobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'rotate(0)',
           }}></div>
           <div style={{
             ...hamburgerLineStyles,
@@ -273,71 +353,74 @@ export default function Header() {
           }}></div>
           <div style={{
             ...hamburgerLineStyles,
-            transform: isMobileMenuOpen ? 'rotate(-45deg)' : 'rotate(0)',
-            transformOrigin: '1px'
+            transform: isMobileMenuOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'rotate(0)',
           }}></div>
         </button>
       </nav>
 
-      {/* Mobile Navigation Overlay */}
-      {isMobile && (
-        <div style={mobileNavStyles}>
-          <button 
-            style={closeMobileMenuStyles}
-            onClick={closeMobileMenu}
-            aria-label="Close mobile menu"
-          >
-            ×
-          </button>
-          <Link 
-            to="/" 
-            style={{
-              ...mobileNavLinkStyles,
-              ...(isActiveLink('/') ? { color: 'var(--primary-color)' } : {})
-            }}
-            onClick={closeMobileMenu}
-            onMouseEnter={handleMobileNavLinkHover}
-            onMouseLeave={handleMobileNavLinkLeave}
-          >
-            Home
-          </Link>
-          <Link 
-            to="/about" 
-            style={{
-              ...mobileNavLinkStyles,
-              ...(isActiveLink('/about') ? { color: 'var(--primary-color)' } : {})
-            }}
-            onClick={closeMobileMenu}
-            onMouseEnter={handleMobileNavLinkHover}
-            onMouseLeave={handleMobileNavLinkLeave}
-          >
-            About
-          </Link>
-          <Link 
-            to="/projects" 
-            style={{
-              ...mobileNavLinkStyles,
-              ...(isActiveLink('/projects') ? { color: 'var(--primary-color)' } : {})
-            }}
-            onClick={closeMobileMenu}
-            onMouseEnter={handleMobileNavLinkHover}
-            onMouseLeave={handleMobileNavLinkLeave}
-          >
-            Projects
-          </Link>
-          <Link 
-            to="/contact" 
-            style={{
-              ...mobileNavLinkStyles,
-              ...(isActiveLink('/contact') ? { color: 'var(--primary-color)' } : {})
-            }}
-            onClick={closeMobileMenu}
-            onMouseEnter={handleMobileNavLinkHover}
-            onMouseLeave={handleMobileNavLinkLeave}
-          >
-            Contact
-          </Link>
-        </div>
+      {/* Mobile Navigation Overlay and Menu - Rendered as Portal */}
+      {isMobile && isMobileMenuOpen && createPortal(
+        <>
+          {/* Overlay for clicking outside */}
+          <div style={mobileOverlayStyles} onClick={handleOverlayClick}></div>
+          
+          {/* Mobile Navigation Dropdown */}
+          <div style={mobileNavStyles}>
+            <Link 
+              to="/" 
+              style={{
+                ...mobileNavLinkStyles,
+                ...(isActiveLink('/') ? mobileNavLinkActiveStyles : {})
+              }}
+              onClick={closeMobileMenu}
+              onMouseEnter={handleMobileNavLinkHover}
+              onMouseLeave={handleMobileNavLinkLeave}
+            >
+              <span>{getNavIcon('/')}</span>
+              Home
+            </Link>
+            <Link 
+              to="/about" 
+              style={{
+                ...mobileNavLinkStyles,
+                ...(isActiveLink('/about') ? mobileNavLinkActiveStyles : {})
+              }}
+              onClick={closeMobileMenu}
+              onMouseEnter={handleMobileNavLinkHover}
+              onMouseLeave={handleMobileNavLinkLeave}
+            >
+              <span>{getNavIcon('/about')}</span>
+              About
+            </Link>
+            <Link 
+              to="/projects" 
+              style={{
+                ...mobileNavLinkStyles,
+                ...(isActiveLink('/projects') ? mobileNavLinkActiveStyles : {})
+              }}
+              onClick={closeMobileMenu}
+              onMouseEnter={handleMobileNavLinkHover}
+              onMouseLeave={handleMobileNavLinkLeave}
+            >
+              <span>{getNavIcon('/projects')}</span>
+              Projects
+            </Link>
+            <Link 
+              to="/contact" 
+              style={{
+                ...mobileNavLinkStyles,
+                ...(isActiveLink('/contact') ? mobileNavLinkActiveStyles : {})
+              }}
+              onClick={closeMobileMenu}
+              onMouseEnter={handleMobileNavLinkHover}
+              onMouseLeave={handleMobileNavLinkLeave}
+            >
+              <span>{getNavIcon('/contact')}</span>
+              Contact
+            </Link>
+          </div>
+        </>,
+        document.body
       )}
     </header>
   );
