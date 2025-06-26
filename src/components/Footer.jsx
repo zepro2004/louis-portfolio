@@ -1,6 +1,20 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function Footer() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive design with proper effect
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
   const footerStyles = {
     width: '100%',
     background: 'var(--footer-gradient)',
@@ -222,9 +236,7 @@ export default function Footer() {
     e.currentTarget.style.transform = 'translateX(0)';
   };
 
-  // Media query styles for responsive design
-  const isMobile = window.innerWidth <= 768;
-  
+  // Media query styles for responsive design  
   const responsiveFooterContentStyles = isMobile ? {
     gridTemplateColumns: '1fr',
     textAlign: 'center',
