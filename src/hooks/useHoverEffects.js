@@ -15,19 +15,6 @@ export function useHoverEffects() {
     e.currentTarget.style.boxShadow = 'var(--shadow-md)';
   }, []);
 
-  // Button hover effect
-  const buttonHover = useCallback((e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-dark)';
-    e.currentTarget.style.transform = 'translateY(-2px)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-brand-hover)';
-  }, []);
-
-  const buttonLeave = useCallback((e) => {
-    e.currentTarget.style.backgroundColor = 'var(--primary-color)';
-    e.currentTarget.style.transform = 'translateY(0)';
-    e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
-  }, []);
-
   // Link hover effect
   const linkHover = useCallback((e) => {
     e.currentTarget.style.color = 'var(--primary-color)';
@@ -61,7 +48,6 @@ export function useHoverEffects() {
 
   return {
     card: { onMouseEnter: cardHover, onMouseLeave: cardLeave },
-    button: { onMouseEnter: buttonHover, onMouseLeave: buttonLeave },
     link: { onMouseEnter: linkHover, onMouseLeave: linkLeave },
     image: { onMouseEnter: imageHover, onMouseLeave: imageLeave },
     tag: { onMouseEnter: tagHover, onMouseLeave: tagLeave }
