@@ -115,7 +115,7 @@ export default function Home() {
               lineHeight: '1.2',
               marginBottom: '1rem'
             }}>
-              Hi, I'm Louis
+              Crafting Digital Solutions
             </div>
             <h2 style={{
               fontSize: isMobile ? '1.3rem' : '1.8rem',
@@ -124,7 +124,7 @@ export default function Home() {
               marginBottom: '2rem',
               lineHeight: '1.4'
             }}>
-              Full-Stack Developer & Tech Innovator
+              Louis Bertrand Ntwali - Full-Stack Developer & Tech Innovator
             </h2>
             <BodyText style={{ 
               fontSize: '1.1rem',
@@ -132,9 +132,9 @@ export default function Home() {
               marginBottom: '3rem',
               color: 'var(--text-primary)'
             }}>
-              I build scalable web applications and innovative software solutions. 
-              Specializing in modern technologies and clean code architecture, 
-              I transform complex ideas into elegant digital experiences.
+              Transforming complex challenges into digital experiences through 
+              modern web and desktop technologies. With a passion for clean architecture and scalable 
+              solutions, I bridge the gap between innovative ideas and real-world applications.
             </BodyText>
             <div style={{
               display: 'flex',
