@@ -8,6 +8,8 @@ echo "🚀 Starting deployment..."
 # --- Configuration ---
 GH_PAGES_DIR="../zepro2004.github.io/"
 DEPLOY_BRANCH="main"
+ORIGINAL_DIR=$(pwd)
+trap 'cd "$ORIGINAL_DIR"' EXIT INT
 
 # --- Safety Check ---
 if [ ! -d "$GH_PAGES_DIR" ]; then
@@ -45,7 +47,7 @@ if [ "$CURRENT_BRANCH" != "$DEPLOY_BRANCH" ]; then
 fi
 
 # Add and commit if there are any changes
-if ! git diff --quiet || ! git diff --cached --quiet; then
+if if [ -n "$(git status --porcelain)" ]; then
   git add .
   git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
 else
@@ -56,6 +58,3 @@ fi
 git push origin "$DEPLOY_BRANCH" || echo "❌ Push failed. Check your remote or resolve conflicts."
 
 echo "🎉 Deployment successful!"
-
-cd -
-
