@@ -6,6 +6,10 @@ export default function Footer() {
   const isMobile = useResponsive();
   const { link: linkHover } = useHoverEffects();
 
+  const handleNavClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const footerStyles = {
     width: '100%',
     background: 'var(--footer-gradient)',
@@ -232,6 +236,7 @@ export default function Footer() {
                   key={index}
                   to={link.to} 
                   style={quickLinkStyles}
+                  onClick={handleNavClick}
                   {...linkHover}
                 >
                   {link.icon} {link.label}
