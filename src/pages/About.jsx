@@ -1,12 +1,27 @@
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useResponsive } from '../hooks/useResponsive';
 import { PageWrapper } from '../components/layout';
-import { HeroSection, Section, Button } from '../components/ui';
+import { HeroSection, Section, Button, OptimizedImage } from '../components/ui';
 import { BodyText } from '../components/ui';
-// Import images
-import passionImage from '../assets/images/about/Passion.jpg';
-import timeImage from '../assets/images/about/time.jpg';
-import codingImage from '../assets/images/about/coding.jpg';
+// Import images from organized folders
+import passionImage from '../assets/images/about/original/Passion.jpg';
+import timeImage from '../assets/images/about/original/time.jpg';
+import codingImage from '../assets/images/about/original/coding.jpg';
+import motivationImage from '../assets/images/about/original/motivation.jpg';
+
+// Import optimized WebP versions from size-specific folders
+import passionSmall from '../assets/images/about/small/passion-small.webp';
+import passionMedium from '../assets/images/about/medium/passion-medium.webp';
+import passionLarge from '../assets/images/about/large/passion-large.webp';
+import timeSmall from '../assets/images/about/small/time-small.webp';
+import timeMedium from '../assets/images/about/medium/time-medium.webp';
+import timeLarge from '../assets/images/about/large/time-large.webp';
+import codingSmall from '../assets/images/about/small/coding-small.webp';
+import codingMedium from '../assets/images/about/medium/coding-medium.webp';
+import codingLarge from '../assets/images/about/large/coding-large.webp';
+import motivationSmall from '../assets/images/about/small/motivation-small.webp';
+import motivationMedium from '../assets/images/about/medium/motivation-medium.webp';
+import motivationLarge from '../assets/images/about/large/motivation-large.webp';
 
 export default function About() {
   usePageTitle('About Me');
@@ -91,7 +106,7 @@ export default function About() {
               marginBottom: '1rem',
               ...(isMobile && { fontSize: '2rem', textAlign: 'center' })
             }}>
-              Hi, I'm Louis Bertrand Ntwali
+              Louis Bertrand Ntwali
             </h1>
             <p style={{
               fontSize: '1.3rem',
@@ -100,9 +115,9 @@ export default function About() {
               margin: '0 0 1.5rem 0',
               ...(isMobile && { fontSize: '1.1rem', textAlign: 'center' })
             }}>
-              A dedicated Computer Science student who believes in the power of technology 
-              to transform lives. My journey spans from academic excellence to hands-on 
-              project development, always driven by curiosity and innovation.
+              Computer Science student with a belief in technology's potential 
+              to create meaningful change. My journey combines academic studies with practical 
+              innovation, driven by curiosity and a commitment to excellence in every project I undertake.
             </p>
             <div style={{
               display: 'flex',
@@ -271,8 +286,13 @@ export default function About() {
             e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
           }}
           >
-            <img 
+            <OptimizedImage 
               src={passionImage} 
+              srcSet={{
+                small: passionSmall,
+                medium: passionMedium,
+                large: passionLarge
+              }}
               alt="Passion for coding" 
               style={{
                 width: '100%',
@@ -312,8 +332,13 @@ export default function About() {
             e.target.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
           }}
           >
-            <img 
+            <OptimizedImage 
               src={timeImage} 
+              srcSet={{
+                small: timeSmall,
+                medium: timeMedium,
+                large: timeLarge
+              }}
               alt="Time and dedication" 
               style={{
                 width: '100%',
@@ -361,17 +386,18 @@ export default function About() {
               lineHeight: '1.7',
               marginBottom: '1.5rem'
             }}>
-              Every line of code I write is driven by the belief that technology should 
-              solve real problems and create meaningful impact. I'm passionate about building 
-              solutions that not only work perfectly but also enhance people's lives.
+              Beyond writing functional code, I architect solutions that solve genuine problems 
+              and create lasting impact. Each project is an opportunity to push boundaries, 
+              challenge conventional thinking, and deliver experiences that truly matter.
             </BodyText>
             <BodyText style={{ 
               fontSize: '1.1rem', 
               lineHeight: '1.7',
               color: 'var(--text-secondary)'
             }}>
-              Whether it's a simple utility tool or a complex web application, I approach 
-              each project with curiosity, dedication, and a commitment to excellence.
+              From elegant user interfaces to robust backend systems, I believe exceptional 
+              software emerges when technical expertise meets creative problem-solving and 
+              an unwavering commitment to quality.
             </BodyText>
           </div>
           
@@ -381,8 +407,13 @@ export default function About() {
             overflow: 'hidden',
             boxShadow: '0 15px 35px rgba(0,0,0,0.15)'
           }}>
-            <img 
+            <OptimizedImage 
               src={codingImage} 
+              srcSet={{
+                small: codingSmall,
+                medium: codingMedium,
+                large: codingLarge
+              }}
               alt="Development motivation" 
               style={{
                 width: '100%',
@@ -427,9 +458,14 @@ export default function About() {
             overflow: 'hidden',
             boxShadow: '0 15px 35px rgba(0,0,0,0.15)'
           }}>
-            <img 
-              src={timeImage} 
-              alt="Development workspace" 
+            <OptimizedImage 
+              src={motivationImage} 
+              srcSet={{
+                small: motivationSmall,
+                medium: motivationMedium,
+                large: motivationLarge
+              }}
+              alt="Creative inspiration and motivation" 
               style={{
                 width: '100%',
                 height: '300px',
@@ -472,17 +508,18 @@ export default function About() {
               lineHeight: '1.7',
               marginBottom: '1.5rem'
             }}>
-              My development environment is where ideas transform into reality. From late-night 
-              debugging sessions to breakthrough moments, every hour spent coding contributes 
-              to my growth as a developer.
+              Within my development environment, abstract concepts crystallize into tangible 
+              solutions. Each coding session—whether debugging complex algorithms or architecting 
+              new features—represents another step in my evolution as a software engineer.
             </BodyText>
             <BodyText style={{ 
               fontSize: '1.1rem', 
               lineHeight: '1.7',
               color: 'var(--text-secondary)'
             }}>
-              Technology evolves rapidly, and I embrace the challenge of staying current with 
-              emerging trends, best practices, and innovative tools that shape the future of development.
+              The technology landscape evolves at lightning speed, and I thrive on mastering 
+              emerging frameworks, adopting cutting-edge methodologies, and exploring innovative 
+              tools that define tomorrow's development standards.
             </BodyText>
           </div>
         </div>
