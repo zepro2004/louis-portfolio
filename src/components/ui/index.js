@@ -4,6 +4,7 @@ export { default as Card } from './Card';
 export { default as Section } from './Section';
 export { default as Grid, GridItem } from './Grid';
 export { default as HeroSection } from './HeroSection';
+export { default as OptimizedImage } from './OptimizedImage';
 export { 
   PageTitle, 
   SectionTitle, 
