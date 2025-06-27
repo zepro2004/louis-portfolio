@@ -47,7 +47,7 @@ if [ "$CURRENT_BRANCH" != "$DEPLOY_BRANCH" ]; then
 fi
 
 # Add and commit if there are any changes
-if if [ -n "$(git status --porcelain)" ]; then
+if [ -n "$(git status --porcelain)" ]; then
   git add .
   git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
 else
