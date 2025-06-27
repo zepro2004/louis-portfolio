@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import { useHoverEffects } from "../../hooks/useHoverEffects";
 
 export default function DesktopNav({ isMobile, isActiveLink }) {
-  const navLinksContainerStyles = {
+  const navContainerStyles = {
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem'
   };
 
-  const navLinkStyles = {
+  const navLinkBaseStyles = {
     position: 'relative',
     textDecoration: 'none',
     padding: '0.75rem 1.5rem',
@@ -20,17 +19,17 @@ export default function DesktopNav({ isMobile, isActiveLink }) {
     overflow: 'hidden'
   };
 
-  const activeNavLinkStyles = {
+  const navLinkActiveStyles = {
     backgroundColor: 'var(--primary-color)',
     color: 'white',
     boxShadow: 'var(--shadow-brand)'
   };
 
-  const responsiveNavLinksContainerStyles = isMobile ? {
+  const responsiveHideStyles = isMobile ? {
     display: 'none'
   } : {};
 
-  const handleLinkHover = (e) => {
+  const handleNavLinkHover = (e) => {
     if (!isActiveLink(e.currentTarget.getAttribute('href'))) {
       e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
       e.currentTarget.style.transform = 'translateY(-2px)';
@@ -38,7 +37,7 @@ export default function DesktopNav({ isMobile, isActiveLink }) {
     }
   };
 
-  const handleLinkLeave = (e) => {
+  const handleNavLinkLeave = (e) => {
     if (!isActiveLink(e.currentTarget.getAttribute('href'))) {
       e.currentTarget.style.backgroundColor = 'transparent';
       e.currentTarget.style.transform = 'translateY(0)';
@@ -46,7 +45,7 @@ export default function DesktopNav({ isMobile, isActiveLink }) {
     }
   };
 
-  const navLinks = [
+  const navigationLinks = [
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/projects', label: 'Projects' },
@@ -54,17 +53,17 @@ export default function DesktopNav({ isMobile, isActiveLink }) {
   ];
 
   return (
-    <div style={{...navLinksContainerStyles, ...responsiveNavLinksContainerStyles}}>
-      {navLinks.map((link) => (
+    <div style={{...navContainerStyles, ...responsiveHideStyles}}>
+      {navigationLinks.map((link) => (
         <Link 
           key={link.to}
           to={link.to} 
           style={{
-            ...navLinkStyles, 
-            ...(isActiveLink(link.to) ? activeNavLinkStyles : {})
+            ...navLinkBaseStyles, 
+            ...(isActiveLink(link.to) ? navLinkActiveStyles : {})
           }}
-          onMouseEnter={handleLinkHover}
-          onMouseLeave={handleLinkLeave}
+          onMouseEnter={handleNavLinkHover}
+          onMouseLeave={handleNavLinkLeave}
         >
           {link.label}
         </Link>

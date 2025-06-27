@@ -8,6 +8,7 @@ export default function Section({
   children, 
   title,
   subtitle,
+  wide = false, // Add wide prop for 3-column layouts
   style = {},
   titleStyle = {},
   contentStyle = {},
@@ -18,8 +19,9 @@ export default function Section({
   
   const sectionStyle = {
     marginBottom: '4rem',
-    maxWidth: 'var(--container-md)',
+    maxWidth: wide ? 'var(--container-xl)' : 'var(--container-md)',
     width: '100%',
+    padding: wide ? '0 2rem' : '0',
     ...style
   };
 

@@ -6,12 +6,10 @@ set -e
 echo "🚀 Starting deployment..."
 
 # --- Configuration ---
-# The directory of your local clone of the zepro2004.github.io repo.
-# Note: Using a more descriptive variable name.
 GH_PAGES_DIR="../zepro2004.github.io/"
+DEPLOY_BRANCH="main"
 
 # --- Safety Check ---
-# Check if the deployment directory actually exists.
 if [ ! -d "$GH_PAGES_DIR" ]; then
   echo "❌ Deployment Error: Directory $GH_PAGES_DIR does not exist."
   echo "Please clone your GitHub Pages repo next to your project folder."
@@ -25,28 +23,39 @@ echo "✅ Build complete."
 
 # --- Deploy Step ---
 echo "🚚 Syncing files to $GH_PAGES_DIR..."
-# Use rsync to copy files.
-# --delete removes old files from the destination.
-# --exclude='.git' is CRITICAL to prevent deleting the git repo in the destination.
 rsync -av --delete --exclude='.git' dist/ "$GH_PAGES_DIR"
 echo "✅ Sync complete."
 
 # --- Git Commit and Push ---
 echo "📖 Committing and pushing to GitHub..."
-# Navigate into the GitHub Pages repo
 cd "$GH_PAGES_DIR"
 
-# Add all changes
-git add .
+# Check if branch exists
+if ! git show-ref --quiet refs/heads/"$DEPLOY_BRANCH"; then
+  echo "❌ Branch '$DEPLOY_BRANCH' does not exist."
+  exit 1
+fi
 
-# Commit with a timestamp
-git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
+# Ensure we're on the correct branch
+CURRENT_BRANCH=$(git symbolic-ref --short HEAD)
+if [ "$CURRENT_BRANCH" != "$DEPLOY_BRANCH" ]; then
+  echo "⚠️ You're on branch '$CURRENT_BRANCH' but expected '$DEPLOY_BRANCH'."
+  echo "Switching..."
+  git checkout "$DEPLOY_BRANCH"
+fi
 
-# Push to the remote repository
-git push
+# Add and commit if there are any changes
+if ! git diff --quiet || ! git diff --cached --quiet; then
+  git add .
+  git commit -m "Deploy: $(date '+%Y-%m-%d %H:%M:%S')"
+else
+  echo "🟢 No changes to commit."
+fi
+
+# Push to the remote
+git push origin "$DEPLOY_BRANCH" || echo "❌ Push failed. Check your remote or resolve conflicts."
 
 echo "🎉 Deployment successful!"
 
-# Return to the previous directory
 cd -
 

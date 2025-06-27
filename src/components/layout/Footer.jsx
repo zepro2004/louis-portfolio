@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useResponsive } from '../hooks/useResponsive';
-import { useHoverEffects } from '../hooks/useHoverEffects';
+import { useResponsive } from '../../hooks/useResponsive';
+import { useHoverEffects } from '../../hooks/useHoverEffects';
 
 export default function Footer() {
   const isMobile = useResponsive();

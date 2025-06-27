@@ -24,7 +24,7 @@ export default function MobileMenuButton({ isMobile, isMobileMenuOpen, toggleMob
     transform: isMobileMenuOpen ? 'scale(1.05)' : 'scale(1)'
   };
 
-  const hamburgerLineStyles = {
+  const menuLineStyles = {
     width: '100%',
     height: '0.2rem',
     background: 'var(--primary-color)',
@@ -52,16 +52,16 @@ export default function MobileMenuButton({ isMobile, isMobileMenuOpen, toggleMob
       aria-expanded={isMobileMenuOpen}
     >
       <div style={{
-        ...hamburgerLineStyles,
+        ...menuLineStyles,
         transform: isMobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'rotate(0)',
       }}></div>
       <div style={{
-        ...hamburgerLineStyles,
+        ...menuLineStyles,
         opacity: isMobileMenuOpen ? '0' : '1',
         transform: isMobileMenuOpen ? 'translateX(20px)' : 'translateX(0)'
       }}></div>
       <div style={{
-        ...hamburgerLineStyles,
+        ...menuLineStyles,
         transform: isMobileMenuOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'rotate(0)',
       }}></div>
     </button>

@@ -143,7 +143,7 @@ export const components = {
     
     threeColumn: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gridTemplateColumns: 'repeat(3, 1fr)',
       gap: '1.5rem'
     },
 

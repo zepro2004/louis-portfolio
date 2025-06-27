@@ -1,5 +1,6 @@
 import { components } from '../../utils/styles';
 import { useHoverEffects } from '../../hooks/useHoverEffects';
+import { useResponsive } from '../../hooks/useResponsive';
 
 /**
  * Reusable Grid component with predefined layouts
@@ -11,10 +12,24 @@ export default function Grid({
   style = {},
   ...props 
 }) {
+  const isMobile = useResponsive();
+  
+  // Handle responsive threeColumn layout
+  const getResponsiveColumns = () => {
+    if (columns === 'threeColumn' && isMobile) {
+      return 'repeat(1, 1fr)'; // Single column on mobile
+    }
+    return typeof columns === 'string' ? components.grid[columns]?.gridTemplateColumns : columns;
+  };
+
   const gridStyle = {
-    ...(typeof columns === 'string' ? components.grid[columns] : {}),
-    ...(typeof columns === 'string' ? {} : { gridTemplateColumns: columns }),
+    display: 'grid',
+    gridTemplateColumns: getResponsiveColumns(),
     gap,
+    ...(typeof columns === 'string' && components.grid[columns] ? {
+      ...components.grid[columns],
+      gridTemplateColumns: getResponsiveColumns()
+    } : {}),
     ...style
   };
 

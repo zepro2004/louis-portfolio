@@ -1,11 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useResponsive } from "../../hooks/useResponsive";
+import { useResponsive } from "../../../hooks/useResponsive";
 import useHeaderLogic from "./useHeaderLogic";
-import DesktopNav from "./DesktopNav";
-import MobileMenuButton from "./MobileMenuButton";
-import MobileNav from "./MobileNav";
+import { DesktopNav, MobileMenuButton, MobileNav } from "./Navigation";
 
 export default function Header() {
   const location = useLocation();

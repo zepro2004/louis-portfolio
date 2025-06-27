@@ -1,9 +1,9 @@
-import notesAppImage from "../assets/images/Projects/NotesApp.png";
-import eventsWebsiteImage from "../assets/images/Projects/EventsWebsite.png";
-import palindromeCheckerImage from "../assets/images/Projects/PalindromeChecker.png";
-import decimalConverterImage from "../assets/images/Projects/DecimalConverter.png";
-import telephoneValidatorImage from "../assets/images/Projects/TelephoneValidator.png";
-import romanConverterImage from "../assets/images/Projects/RomanConverter.png";
+import notesAppImage from "../assets/images/projects/NotesApp.png";
+import eventsWebsiteImage from "../assets/images/projects/EventsWebsite.png";
+import palindromeCheckerImage from "../assets/images/projects/PalindromeChecker.png";
+import decimalConverterImage from "../assets/images/projects/DecimalConverter.png";
+import telephoneValidatorImage from "../assets/images/projects/TelephoneValidator.png";
+import romanConverterImage from "../assets/images/projects/RomanConverter.png";
 
 const projects = [
   {

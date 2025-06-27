@@ -3,7 +3,9 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useResponsive } from '../hooks/useResponsive';
 import { PageWrapper } from '../components/layout';
 import { HeroSection, Section, Card, Button } from '../components/ui';
-import { PageTitle, HeroSubtitle, BodyText } from '../components/ui';
+import { PageTitle, HeroSubtitle } from '../components/ui';
+import { AnimatedCard } from '../components/shared';
+import { Toast } from '../components/page-specific/Contact';
 
 export default function Contact() {
   usePageTitle('Contact Me');
@@ -16,6 +18,16 @@ export default function Contact() {
     message: ''
   });
   const [errors, setErrors] = useState({});
+  const [toast, setToast] = useState({
+    isVisible: false,
+    message: '',
+    type: 'success'
+  });
+
+  // Function to close toast
+  const closeToast = () => {
+    setToast(prev => ({ ...prev, isVisible: false }));
+  };
 
   // Contact methods data
   const contactMethods = [
@@ -83,20 +95,48 @@ export default function Contact() {
     setIsSubmitting(true);
     
     try {
-      // Simulate form submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Submit form to FormSubmit.co
+      const submitData = new FormData();
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
+      submitData.append('subject', formData.subject);
+      submitData.append('message', formData.message);
+      submitData.append('_subject', `Portfolio Contact: ${formData.subject}`);
+      submitData.append('_captcha', 'false');
+      submitData.append('_template', 'table');
       
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
+      const response = await fetch('https://formsubmit.co/louisbertrandntwali01@gmail.com', {
+        method: 'POST',
+        body: submitData
       });
       
-      alert('Thank you! Your message has been sent successfully.');
+      if (response.ok) {
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+        
+        // Show success toast
+        setToast({
+          isVisible: true,
+          message: 'Thank you! Your message has been sent successfully.',
+          type: 'success'
+        });
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
-      alert('Sorry, there was an error sending your message. Please try again.');
+      console.error('Form submission error:', error);
+      
+      // Show error toast
+      setToast({
+        isVisible: true,
+        message: 'Sorry, there was an error sending your message. Please try again.',
+        type: 'error'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -107,23 +147,25 @@ export default function Contact() {
     flexDirection: 'column',
     gap: '1.5rem',
     width: '100%',
-    maxWidth: '600px'
+    maxWidth: '800px'
   };
 
   const inputStyle = {
-    padding: '1rem',
+    padding: '1.25rem',
     borderRadius: 'var(--radius-md)',
     border: '1px solid var(--border-light)',
     backgroundColor: 'var(--bg-section)',
     color: 'var(--text-primary)',
-    fontSize: '1rem',
+    fontSize: '1.1rem',
     transition: 'var(--transition-base)',
-    outline: 'none'
+    outline: 'none',
+    width: '100%',
+    boxSizing: 'border-box'
   };
 
   const textareaStyle = {
     ...inputStyle,
-    minHeight: '120px',
+    minHeight: '150px',
     resize: 'vertical',
     fontFamily: 'inherit'
   };
@@ -150,9 +192,13 @@ export default function Contact() {
 
   const contactMethodsGridStyle = {
     display: 'grid',
-    gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-    gap: '1rem',
-    marginBottom: '3rem'
+    gridTemplateColumns: isMobile 
+      ? '1fr' 
+      : 'repeat(2, 1fr)',
+    gap: '1.5rem',
+    marginBottom: '3rem',
+    maxWidth: '800px',
+    margin: '0 auto 3rem auto'
   };
 
   return (
@@ -170,40 +216,45 @@ export default function Contact() {
         {/* Contact Methods */}
         <div style={contactMethodsGridStyle}>
           {contactMethods.map((method, index) => (
-            <a
+            <AnimatedCard
               key={index}
+              variant="contact"
+              icon={method.icon}
               href={method.href}
-              style={contactMethodStyle}
-              target={method.href.startsWith('http') ? '_blank' : '_self'}
-              rel={method.href.startsWith('http') ? 'noopener noreferrer' : ''}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--accent-brand-10)';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-brand)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'var(--bg-section)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-              }}
+              delay={index * 100}
             >
-              <span style={{ fontSize: '1.5rem' }}>{method.icon}</span>
-              <div>
-                <div style={{ fontWeight: '600', marginBottom: '0.25rem' }}>
+              <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'flex-start', 
+                textAlign: 'left',
+                gap: '0.5rem',
+                width: '100%'
+              }}>
+                <div style={{ 
+                  fontWeight: '600', 
+                  fontSize: '1.1rem',
+                  color: 'var(--text-primary)'
+                }}>
                   {method.label}
                 </div>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                <div style={{ 
+                  color: 'var(--text-secondary)', 
+                  fontSize: '0.95rem',
+                  lineHeight: '1.4',
+                  wordBreak: 'break-word'
+                }}>
                   {method.value}
                 </div>
               </div>
-            </a>
+            </AnimatedCard>
           ))}
         </div>
       </HeroSection>
 
       {/* Contact Form */}
       <Section title="Send Me a Message">
-        <Card style={{ maxWidth: '600px', width: '100%' }}>
+        <Card style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
           <form onSubmit={handleSubmit} style={formStyle}>
             <div>
               <input
@@ -278,6 +329,14 @@ export default function Contact() {
           </form>
         </Card>
       </Section>
+
+      {/* Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.isVisible}
+        onClose={closeToast}
+      />
     </PageWrapper>
   );
 }
