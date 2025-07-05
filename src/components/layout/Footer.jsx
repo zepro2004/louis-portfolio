@@ -213,7 +213,6 @@ export default function Footer() {
       <div style={backgroundPatternStyles}></div>
       <div style={footerContainerStyles}>
         <div style={footerContentStyles}>
-          {/* Brand Section */}
           <div>
             <h3 style={brandNameStyles}>Louis Bertrand</h3>
             <p style={brandTaglineStyles}>
@@ -227,7 +226,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h4 style={sectionHeaderStyles}>Navigation</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
@@ -245,7 +243,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Social Links */}
           <div>
             <h4 style={sectionHeaderStyles}>Connect With Me</h4>
             <div style={socialLinksStyles}>
@@ -266,28 +263,21 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h4 style={sectionHeaderStyles}>Get In Touch</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={contactItemStyles}>
                 <span>📧</span>
                 <a 
-                  href="mailto:louisbertrandntwali01@gmail.com"
-                  style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                  href="mailto:lbertrand01@proton.me"
+                  style={{ 
+                    color: 'var(--text-secondary)', 
+                    textDecoration: 'none',
+                    transition: 'all 0.3s ease'
+                  }}
                   {...linkHover}
                 >
-                  louisbertrandntwali01@gmail.com
-                </a>
-              </div>
-              <div style={contactItemStyles}>
-                <span>📞</span>
-                <a 
-                  href="tel:3435586673"
-                  style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
-                  {...linkHover}
-                >
-                  (343) 558-6673
+                  lbertrand01@proton.me
                 </a>
               </div>
               <div style={contactItemStyles}>
@@ -298,10 +288,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
         <div style={dividerStyles}></div>
 
-        {/* Copyright Section */}
         <div style={copyrightSectionStyles}>
           <p style={copyrightStyles}>
             © {new Date().getFullYear()} Louis Bertrand Ntwali. All rights reserved.
