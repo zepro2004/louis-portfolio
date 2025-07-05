@@ -8,11 +8,13 @@ A modern, responsive portfolio website showcasing my journey as a Computer Scien
 
 - **Responsive Design** - Optimized for desktop, tablet, and mobile devices
 - **Modern UI/UX** - Clean, professional design with smooth animations
-- **Interactive Components** - Animated cards, project slideshow, and dynamic statistics
-- **Contact Form** - Functional contact form with toast notifications
-- **Project Showcase** - Filterable project gallery with detailed views
-- **Performance Optimized** - Fast loading with Vite bundling
-- **SEO Friendly** - Proper meta tags and semantic HTML
+- **Interactive Components** - Animated cards, hover effects, and dynamic statistics
+- **Custom Hooks Architecture** - Clean separation of logic and presentation
+- **Contact Form** - Functional contact form with validation and toast notifications
+- **Project Showcase** - Filterable project gallery with carousel and grid views
+- **Performance Optimized** - Fast loading with Vite bundling and lazy loading
+- **SEO Friendly** - Dynamic page titles and semantic HTML
+- **Modular Architecture** - Scalable component organization
 
 ## 🏗️ Tech Stack
 
@@ -102,7 +104,9 @@ src/
 ├── hooks/                        # Custom React hooks
 ├── pages/                        # Page components
 ├── utils/                        # Utility functions
-└── main.jsx                      # App entry point
+└── app/
+    ├── main.jsx                  # App entry point
+    └── App.jsx                   # Root App component
 ```
 
 ## 🎨 Design System
@@ -122,6 +126,17 @@ Components are organized by purpose:
 - **Page-specific**: Components used only on specific pages
 - **Shared**: Components reused across multiple pages
 - **UI**: Generic, reusable UI building blocks
+
+### Custom Hooks Architecture
+The project uses custom hooks for clean separation of logic:
+- **useAboutLogic**: Manages About page state and data
+- **useContactLogic**: Handles contact form, validation, and submission
+- **useHomeLogic**: Controls Home page animations and interactions
+- **useProjectsLogic**: Manages project filtering, navigation, and carousel
+- **useEntranceAnimation**: Provides consistent entrance animations
+- **useHoverEffects**: Centralized hover effect management
+- **usePageTitle**: Dynamic page title updates
+- **useResponsive**: Responsive design breakpoint detection
 
 ### Styling Approach
 - CSS Variables for consistent theming

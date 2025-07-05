@@ -4,6 +4,7 @@
 set -e
 
 echo "🚀 Starting deployment..."
+echo "📍 Target: $GH_PAGES_DIR"
 
 # --- Configuration ---
 GH_PAGES_DIR="../zepro2004.github.io/"
@@ -20,7 +21,10 @@ fi
 
 # --- Build Step ---
 echo "📦 Building the project..."
-npm run build
+if ! npm run build; then
+  echo "❌ Build failed! Deployment aborted."
+  exit 1
+fi
 echo "✅ Build complete."
 
 # --- Deploy Step ---
@@ -55,6 +59,10 @@ else
 fi
 
 # Push to the remote
-git push origin "$DEPLOY_BRANCH" || echo "❌ Push failed. Check your remote or resolve conflicts."
-
-echo "🎉 Deployment successful!"
+echo "🚀 Pushing to GitHub Pages..."
+if git push origin "$DEPLOY_BRANCH"; then
+  echo "🎉 Deployment successful!"
+else
+  echo "❌ Push failed. Check your remote or resolve conflicts."
+  exit 1
+fi
