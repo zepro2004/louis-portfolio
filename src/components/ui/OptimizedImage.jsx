@@ -17,7 +17,7 @@ export default function OptimizedImage({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
-  const [hasError, setHasError] = useState(false);
+  const [_hasError, setHasError] = useState(false);
   const imgRef = useRef(null);
   const isMobile = useResponsive(768);
   const isTablet = useResponsive(1024);

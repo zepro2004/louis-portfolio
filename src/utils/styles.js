@@ -2,7 +2,6 @@
  * Common style utilities and style objects
  */
 
-// Base layout styles
 export const layoutStyles = {
   page: {
     width: '100%',
@@ -31,7 +30,6 @@ export const layoutStyles = {
   }
 };
 
-// Typography styles
 export const typography = {
   pageTitle: {
     fontSize: '2.5rem',
@@ -77,7 +75,6 @@ export const typography = {
   }
 };
 
-// Component base styles
 export const components = {
   card: {
     padding: '2rem',
@@ -130,8 +127,7 @@ export const components = {
     boxShadow: 'var(--shadow-lg)',
     maxWidth: 'var(--container-md)',
     width: '100%',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer'
+    transition: 'all 0.3s ease'
   },
 
   grid: {
@@ -152,21 +148,9 @@ export const components = {
       gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
       gap: '1.5rem'
     }
-  },
-
-  skillTag: {
-    backgroundColor: 'var(--primary-color)',
-    color: 'var(--bg-primary)',
-    padding: '0.4rem 0.8rem',
-    borderRadius: '15px',
-    fontSize: '0.8rem',
-    fontWeight: '500',
-    transition: 'var(--transition-base)',
-    cursor: 'pointer'
   }
 };
 
-// Responsive utilities
 export const responsive = {
   mobile: {
     pageTitle: {
@@ -191,7 +175,6 @@ export const responsive = {
   }
 };
 
-// Animation utilities
 export const animations = {
   fadeInUp: {
     animation: 'fadeInUp 0.6s ease-out'
@@ -210,7 +193,6 @@ export const animations = {
   }
 };
 
-// Utility functions
 export function mergeStyles(...styles) {
   return Object.assign({}, ...styles);
 }

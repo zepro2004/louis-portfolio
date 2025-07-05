@@ -1,5 +1,6 @@
-import { components, getResponsiveStyle, responsive } from '../../utils/styles';
+import { getResponsiveStyle, responsive } from '../../utils/styles';
 import { useResponsive } from '../../hooks/useResponsive';
+import { useHoverEffects } from '../../hooks/useHoverEffects';
 
 /**
  * Reusable Section component with consistent spacing and styling
@@ -9,6 +10,7 @@ export default function Section({
   title,
   subtitle,
   wide = false, // Add wide prop for 3-column layouts
+  hover = false, // Add hover prop for card-like sections
   style = {},
   titleStyle = {},
   contentStyle = {},
@@ -16,12 +18,27 @@ export default function Section({
   ...props 
 }) {
   const isMobile = useResponsive();
+  const { card: hoverProps } = useHoverEffects();
   
-  const sectionStyle = {
+  const baseStyle = {
     marginBottom: '4rem',
     maxWidth: wide ? 'var(--container-xl)' : 'var(--container-md)',
     width: '100%',
-    padding: wide ? '0 2rem' : '0',
+    padding: wide ? '0 2rem' : '0'
+  };
+
+  // Add card-like styling when hover is enabled
+  const sectionStyle = hover ? {
+    ...baseStyle,
+    padding: '3rem 2rem',
+    background: 'var(--bg-section)',
+    borderRadius: 'var(--radius-xl)',
+    border: '1px solid var(--border-light)',
+    boxShadow: 'var(--shadow-lg)',
+    transition: 'all 0.3s ease',
+    ...style
+  } : {
+    ...baseStyle,
     ...style
   };
 
@@ -48,7 +65,12 @@ export default function Section({
   };
 
   return (
-    <section style={sectionStyle} className={className} {...props}>
+    <section 
+      style={sectionStyle} 
+      className={className} 
+      {...(hover ? hoverProps : {})}
+      {...props}
+    >
       {title && (
         <h2 style={{...titleResponsiveStyle, ...titleStyle}}>
           {title}
