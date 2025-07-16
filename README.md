@@ -2,15 +2,15 @@
 
 <div align="center">
 
-### A m## 📖 Pages & Sections
+### 📖 Pages & Sections
 
 <div align="center">
 
 **Home** • **About** • **Projects** • **Contact**
 
-</div>responsive portfolio showcasing my journey as a Computer Science student and aspiring Full-Stack Developer
+</div>Responsive Portfolio showcasing my journey as a Computer Science student and aspiring Full-Stack Developer
 
-**🌐 Live Website:** [**louisportfolio.vercel.app**](https://louisportfolio.vercel.app)
+**🌐 Live Website:** [**louisbertrand-portfolio.vercel.app**](https://louisbertrand-portfolio.vercel.app)
 
 ---
 
@@ -285,14 +285,6 @@ npm run docker:prod             # Starts on localhost:3000
 npm run deploy:registry dockerhub   # Push to Docker Hub
 npm run deploy:registry github      # Push to GitHub Container Registry
 ```
-
-### Legacy Deployment Options
-
-#### Deploy to Netlify
-1. Connect your GitHub repository to Netlify
-2. Set build command: `npm run build`
-3. Set publish directory: `dist`
-4. Configure redirects in `public/_redirects`
 
 > **For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)**
 
