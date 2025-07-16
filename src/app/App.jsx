@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "../assets/styles/global.css";
 import Layout from "../components/layout/Layout";
@@ -10,6 +12,7 @@ import About from "../pages/About";
 function App() {
   return (
     <Router>
+      <Analytics />
       <ScrollToTop />
       <Layout>
         <Routes>
