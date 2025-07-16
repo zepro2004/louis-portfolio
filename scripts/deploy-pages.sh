@@ -10,7 +10,7 @@ echo "🚀 Starting deployment..."
 echo "📍 Target: $GH_PAGES_DIR"
 
 # --- Configuration ---
-GH_PAGES_DIR="../zepro2004.github.io/"
+GH_PAGES_DIR="../../zepro2004.github.io/"
 DEPLOY_BRANCH="main"
 ORIGINAL_DIR=$(pwd)
 trap 'cd "$ORIGINAL_DIR"' EXIT INT
@@ -32,7 +32,7 @@ echo "✅ Build complete."
 
 # --- Deploy Step ---
 echo "🚚 Syncing files to $GH_PAGES_DIR..."
-rsync -av --delete --exclude='.git' dist/ "$GH_PAGES_DIR"
+rsync -av --delete --exclude='.git' ../dist/ "$GH_PAGES_DIR"
 echo "✅ Sync complete."
 
 # --- Git Commit and Push ---
