@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "../assets/styles/global.css";
@@ -13,6 +14,7 @@ function App() {
   return (
     <Router>
       <Analytics />
+      <SpeedInsights />  
       <ScrollToTop />
       <Layout>
         <Routes>
