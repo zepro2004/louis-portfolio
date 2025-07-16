@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+scripts/.last_build_timestamp
+scripts/.last_dev_build_timestamp
